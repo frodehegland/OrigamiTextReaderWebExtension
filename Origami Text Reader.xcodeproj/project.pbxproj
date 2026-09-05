@@ -1,0 +1,1043 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5F60A078304C32C900B671F5 /* Ori-logo-2.icon in Resources */ = {isa = PBXBuildFile; fileRef = 5F60A077304C32C900B671F5 /* Ori-logo-2.icon */; };
+		5F60A079304C32C900B671F5 /* Ori-logo-2.icon in Resources */ = {isa = PBXBuildFile; fileRef = 5F60A077304C32C900B671F5 /* Ori-logo-2.icon */; };
+		5F60A07A304C32C900B671F5 /* Ori-logo-2.icon in Resources */ = {isa = PBXBuildFile; fileRef = 5F60A077304C32C900B671F5 /* Ori-logo-2.icon */; };
+		5F60A07B304C32C900B671F5 /* Ori-logo-2.icon in Resources */ = {isa = PBXBuildFile; fileRef = 5F60A077304C32C900B671F5 /* Ori-logo-2.icon */; };
+		5FF6EFB5304C0BF500F73C66 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF6EFB4304C0BF500F73C66 /* AppDelegate.swift */; };
+		5FF6EFB7304C0BF500F73C66 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF6EFB6304C0BF500F73C66 /* SceneDelegate.swift */; };
+		5FF6EFBA304C0BF500F73C66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFB8304C0BF500F73C66 /* LaunchScreen.storyboard */; };
+		5FF6EFBD304C0BF500F73C66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFBB304C0BF500F73C66 /* Main.storyboard */; };
+		5FF6EFC6304C0BF500F73C66 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF6EFC5304C0BF500F73C66 /* AppDelegate.swift */; };
+		5FF6EFC9304C0BF500F73C66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFC7304C0BF500F73C66 /* Main.storyboard */; };
+		5FF6EFD0304C0BF500F73C66 /* Origami Text Reader Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5FF6EFCF304C0BF500F73C66 /* Origami Text Reader Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5FF6EFDA304C0BF500F73C66 /* Origami Text Reader Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5FF6EFD9304C0BF500F73C66 /* Origami Text Reader Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5FF6EFDF304C0BF500F73C66 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA4304C0BF400F73C66 /* Main.html */; };
+		5FF6EFE0304C0BF500F73C66 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA4304C0BF400F73C66 /* Main.html */; };
+		5FF6EFE1304C0BF500F73C66 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA6304C0BF400F73C66 /* Icon.png */; };
+		5FF6EFE2304C0BF500F73C66 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA6304C0BF400F73C66 /* Icon.png */; };
+		5FF6EFE3304C0BF500F73C66 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA7304C0BF400F73C66 /* Style.css */; };
+		5FF6EFE4304C0BF500F73C66 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA7304C0BF400F73C66 /* Style.css */; };
+		5FF6EFE5304C0BF500F73C66 /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA8304C0BF400F73C66 /* Script.js */; };
+		5FF6EFE6304C0BF500F73C66 /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA8304C0BF400F73C66 /* Script.js */; };
+		5FF6EFE7304C0BF500F73C66 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA9304C0BF400F73C66 /* ViewController.swift */; };
+		5FF6EFE8304C0BF500F73C66 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF6EFA9304C0BF400F73C66 /* ViewController.swift */; };
+		5FF6EFE9304C0BF500F73C66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFAA304C0BF500F73C66 /* Assets.xcassets */; };
+		5FF6EFEA304C0BF500F73C66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFAA304C0BF500F73C66 /* Assets.xcassets */; };
+		5FF6EFEB304C0BF500F73C66 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF6EFAC304C0BF500F73C66 /* SafariWebExtensionHandler.swift */; };
+		5FF6EFEC304C0BF500F73C66 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF6EFAC304C0BF500F73C66 /* SafariWebExtensionHandler.swift */; };
+		5FF6F009304C0BF500F73C66 /* reader in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFFE304C0BF500F73C66 /* reader */; };
+		5FF6F00A304C0BF500F73C66 /* make-safari.sh in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFFF304C0BF500F73C66 /* make-safari.sh */; };
+		5FF6F00B304C0BF500F73C66 /* tools in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F000304C0BF500F73C66 /* tools */; };
+		5FF6F00C304C0BF500F73C66 /* test in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F001304C0BF500F73C66 /* test */; };
+		5FF6F00D304C0BF500F73C66 /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F002304C0BF500F73C66 /* background.js */; };
+		5FF6F00E304C0BF500F73C66 /* {lib,reader,content,icons,tools} in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F003304C0BF500F73C66 /* {lib,reader,content,icons,tools} */; };
+		5FF6F00F304C0BF500F73C66 /* content in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F004304C0BF500F73C66 /* content */; };
+		5FF6F010304C0BF500F73C66 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F005304C0BF500F73C66 /* README.md */; };
+		5FF6F011304C0BF500F73C66 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F006304C0BF500F73C66 /* icons */; };
+		5FF6F012304C0BF500F73C66 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F007304C0BF500F73C66 /* manifest.json */; };
+		5FF6F013304C0BF500F73C66 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F008304C0BF500F73C66 /* lib */; };
+		5FF6F014304C0BF500F73C66 /* reader in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFFE304C0BF500F73C66 /* reader */; };
+		5FF6F015304C0BF500F73C66 /* make-safari.sh in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6EFFF304C0BF500F73C66 /* make-safari.sh */; };
+		5FF6F016304C0BF500F73C66 /* tools in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F000304C0BF500F73C66 /* tools */; };
+		5FF6F017304C0BF500F73C66 /* test in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F001304C0BF500F73C66 /* test */; };
+		5FF6F018304C0BF500F73C66 /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F002304C0BF500F73C66 /* background.js */; };
+		5FF6F019304C0BF500F73C66 /* {lib,reader,content,icons,tools} in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F003304C0BF500F73C66 /* {lib,reader,content,icons,tools} */; };
+		5FF6F01A304C0BF500F73C66 /* content in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F004304C0BF500F73C66 /* content */; };
+		5FF6F01B304C0BF500F73C66 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F005304C0BF500F73C66 /* README.md */; };
+		5FF6F01C304C0BF500F73C66 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F006304C0BF500F73C66 /* icons */; };
+		5FF6F01D304C0BF500F73C66 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F007304C0BF500F73C66 /* manifest.json */; };
+		5FF6F01E304C0BF500F73C66 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 5FF6F008304C0BF500F73C66 /* lib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5FF6EFD1304C0BF500F73C66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FF6EF9E304C0BF400F73C66 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FF6EFCE304C0BF500F73C66;
+			remoteInfo = "Origami Text Reader Extension (iOS)";
+		};
+		5FF6EFDB304C0BF500F73C66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FF6EF9E304C0BF400F73C66 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FF6EFD8304C0BF500F73C66;
+			remoteInfo = "Origami Text Reader Extension (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5FF6EFF2304C0BF500F73C66 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5FF6EFD0304C0BF500F73C66 /* Origami Text Reader Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFF9304C0BF500F73C66 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5FF6EFDA304C0BF500F73C66 /* Origami Text Reader Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		5F60A077304C32C900B671F5 /* Ori-logo-2.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "Ori-logo-2.icon"; sourceTree = "<group>"; };
+		5FF6EFA5304C0BF400F73C66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		5FF6EFA6304C0BF400F73C66 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		5FF6EFA7304C0BF400F73C66 /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		5FF6EFA8304C0BF400F73C66 /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		5FF6EFA9304C0BF400F73C66 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5FF6EFAA304C0BF500F73C66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5FF6EFAC304C0BF500F73C66 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		5FF6EFB1304C0BF500F73C66 /* Origami Text Reader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Origami Text Reader.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FF6EFB4304C0BF500F73C66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		5FF6EFB6304C0BF500F73C66 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		5FF6EFB9304C0BF500F73C66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5FF6EFBC304C0BF500F73C66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5FF6EFBE304C0BF500F73C66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5FF6EFC3304C0BF500F73C66 /* Origami Text Reader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Origami Text Reader.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FF6EFC5304C0BF500F73C66 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		5FF6EFC8304C0BF500F73C66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5FF6EFCA304C0BF500F73C66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5FF6EFCF304C0BF500F73C66 /* Origami Text Reader Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Origami Text Reader Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FF6EFD4304C0BF500F73C66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5FF6EFD9304C0BF500F73C66 /* Origami Text Reader Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Origami Text Reader Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FF6EFDE304C0BF500F73C66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5FF6EFFE304C0BF500F73C66 /* reader */ = {isa = PBXFileReference; lastKnownFileType = folder; name = reader; path = Resources/reader; sourceTree = "<group>"; };
+		5FF6EFFF304C0BF500F73C66 /* make-safari.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = "make-safari.sh"; path = "Resources/make-safari.sh"; sourceTree = "<group>"; };
+		5FF6F000304C0BF500F73C66 /* tools */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tools; path = Resources/tools; sourceTree = "<group>"; };
+		5FF6F001304C0BF500F73C66 /* test */ = {isa = PBXFileReference; lastKnownFileType = folder; name = test; path = Resources/test; sourceTree = "<group>"; };
+		5FF6F002304C0BF500F73C66 /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = background.js; path = Resources/background.js; sourceTree = "<group>"; };
+		5FF6F003304C0BF500F73C66 /* {lib,reader,content,icons,tools} */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "{lib,reader,content,icons,tools}"; path = "Resources/{lib,reader,content,icons,tools}"; sourceTree = "<group>"; };
+		5FF6F004304C0BF500F73C66 /* content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = content; path = Resources/content; sourceTree = "<group>"; };
+		5FF6F005304C0BF500F73C66 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = Resources/README.md; sourceTree = "<group>"; };
+		5FF6F006304C0BF500F73C66 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = Resources/icons; sourceTree = "<group>"; };
+		5FF6F007304C0BF500F73C66 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = Resources/manifest.json; sourceTree = "<group>"; };
+		5FF6F008304C0BF500F73C66 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = Resources/lib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5FF6EFAE304C0BF500F73C66 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFC0304C0BF500F73C66 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFCC304C0BF500F73C66 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFD6304C0BF500F73C66 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5FF6EF9D304C0BF400F73C66 = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFA2304C0BF400F73C66 /* Shared (App) */,
+				5FF6EFAB304C0BF500F73C66 /* Shared (Extension) */,
+				5FF6EFB3304C0BF500F73C66 /* iOS (App) */,
+				5FF6EFC4304C0BF500F73C66 /* macOS (App) */,
+				5FF6EFD3304C0BF500F73C66 /* iOS (Extension) */,
+				5FF6EFDD304C0BF500F73C66 /* macOS (Extension) */,
+				5F60A077304C32C900B671F5 /* Ori-logo-2.icon */,
+				5FF6EFB2304C0BF500F73C66 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5FF6EFA2304C0BF400F73C66 /* Shared (App) */ = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFA9304C0BF400F73C66 /* ViewController.swift */,
+				5FF6EFAA304C0BF500F73C66 /* Assets.xcassets */,
+				5FF6EFA3304C0BF400F73C66 /* Resources */,
+			);
+			path = "Shared (App)";
+			sourceTree = "<group>";
+		};
+		5FF6EFA3304C0BF400F73C66 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFA4304C0BF400F73C66 /* Main.html */,
+				5FF6EFA6304C0BF400F73C66 /* Icon.png */,
+				5FF6EFA7304C0BF400F73C66 /* Style.css */,
+				5FF6EFA8304C0BF400F73C66 /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		5FF6EFAB304C0BF500F73C66 /* Shared (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFFD304C0BF500F73C66 /* Resources */,
+				5FF6EFAC304C0BF500F73C66 /* SafariWebExtensionHandler.swift */,
+			);
+			path = "Shared (Extension)";
+			sourceTree = "<group>";
+		};
+		5FF6EFB2304C0BF500F73C66 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFB1304C0BF500F73C66 /* Origami Text Reader.app */,
+				5FF6EFC3304C0BF500F73C66 /* Origami Text Reader.app */,
+				5FF6EFCF304C0BF500F73C66 /* Origami Text Reader Extension.appex */,
+				5FF6EFD9304C0BF500F73C66 /* Origami Text Reader Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5FF6EFB3304C0BF500F73C66 /* iOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFB4304C0BF500F73C66 /* AppDelegate.swift */,
+				5FF6EFB6304C0BF500F73C66 /* SceneDelegate.swift */,
+				5FF6EFB8304C0BF500F73C66 /* LaunchScreen.storyboard */,
+				5FF6EFBB304C0BF500F73C66 /* Main.storyboard */,
+				5FF6EFBE304C0BF500F73C66 /* Info.plist */,
+			);
+			path = "iOS (App)";
+			sourceTree = "<group>";
+		};
+		5FF6EFC4304C0BF500F73C66 /* macOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFC5304C0BF500F73C66 /* AppDelegate.swift */,
+				5FF6EFC7304C0BF500F73C66 /* Main.storyboard */,
+				5FF6EFCA304C0BF500F73C66 /* Info.plist */,
+			);
+			path = "macOS (App)";
+			sourceTree = "<group>";
+		};
+		5FF6EFD3304C0BF500F73C66 /* iOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFD4304C0BF500F73C66 /* Info.plist */,
+			);
+			path = "iOS (Extension)";
+			sourceTree = "<group>";
+		};
+		5FF6EFDD304C0BF500F73C66 /* macOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFDE304C0BF500F73C66 /* Info.plist */,
+			);
+			path = "macOS (Extension)";
+			sourceTree = "<group>";
+		};
+		5FF6EFFD304C0BF500F73C66 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5FF6EFFE304C0BF500F73C66 /* reader */,
+				5FF6EFFF304C0BF500F73C66 /* make-safari.sh */,
+				5FF6F000304C0BF500F73C66 /* tools */,
+				5FF6F001304C0BF500F73C66 /* test */,
+				5FF6F002304C0BF500F73C66 /* background.js */,
+				5FF6F003304C0BF500F73C66 /* {lib,reader,content,icons,tools} */,
+				5FF6F004304C0BF500F73C66 /* content */,
+				5FF6F005304C0BF500F73C66 /* README.md */,
+				5FF6F006304C0BF500F73C66 /* icons */,
+				5FF6F007304C0BF500F73C66 /* manifest.json */,
+				5FF6F008304C0BF500F73C66 /* lib */,
+			);
+			name = Resources;
+			path = "Shared (Extension)";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5FF6EFB0304C0BF500F73C66 /* Origami Text Reader (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FF6EFF3304C0BF500F73C66 /* Build configuration list for PBXNativeTarget "Origami Text Reader (iOS)" */;
+			buildPhases = (
+				5FF6EFAD304C0BF500F73C66 /* Sources */,
+				5FF6EFAE304C0BF500F73C66 /* Frameworks */,
+				5FF6EFAF304C0BF500F73C66 /* Resources */,
+				5FF6EFF2304C0BF500F73C66 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5FF6EFD2304C0BF500F73C66 /* PBXTargetDependency */,
+			);
+			name = "Origami Text Reader (iOS)";
+			packageProductDependencies = (
+			);
+			productName = "Origami Text Reader (iOS)";
+			productReference = 5FF6EFB1304C0BF500F73C66 /* Origami Text Reader.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5FF6EFC2304C0BF500F73C66 /* Origami Text Reader (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FF6EFFA304C0BF500F73C66 /* Build configuration list for PBXNativeTarget "Origami Text Reader (macOS)" */;
+			buildPhases = (
+				5FF6EFBF304C0BF500F73C66 /* Sources */,
+				5FF6EFC0304C0BF500F73C66 /* Frameworks */,
+				5FF6EFC1304C0BF500F73C66 /* Resources */,
+				5FF6EFF9304C0BF500F73C66 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5FF6EFDC304C0BF500F73C66 /* PBXTargetDependency */,
+			);
+			name = "Origami Text Reader (macOS)";
+			packageProductDependencies = (
+			);
+			productName = "Origami Text Reader (macOS)";
+			productReference = 5FF6EFC3304C0BF500F73C66 /* Origami Text Reader.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5FF6EFCE304C0BF500F73C66 /* Origami Text Reader Extension (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FF6EFEF304C0BF500F73C66 /* Build configuration list for PBXNativeTarget "Origami Text Reader Extension (iOS)" */;
+			buildPhases = (
+				5FF6EFCB304C0BF500F73C66 /* Sources */,
+				5FF6EFCC304C0BF500F73C66 /* Frameworks */,
+				5FF6EFCD304C0BF500F73C66 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Origami Text Reader Extension (iOS)";
+			packageProductDependencies = (
+			);
+			productName = "Origami Text Reader Extension (iOS)";
+			productReference = 5FF6EFCF304C0BF500F73C66 /* Origami Text Reader Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		5FF6EFD8304C0BF500F73C66 /* Origami Text Reader Extension (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FF6EFF6304C0BF500F73C66 /* Build configuration list for PBXNativeTarget "Origami Text Reader Extension (macOS)" */;
+			buildPhases = (
+				5FF6EFD5304C0BF500F73C66 /* Sources */,
+				5FF6EFD6304C0BF500F73C66 /* Frameworks */,
+				5FF6EFD7304C0BF500F73C66 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Origami Text Reader Extension (macOS)";
+			packageProductDependencies = (
+			);
+			productName = "Origami Text Reader Extension (macOS)";
+			productReference = 5FF6EFD9304C0BF500F73C66 /* Origami Text Reader Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5FF6EF9E304C0BF400F73C66 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					5FF6EFB0304C0BF500F73C66 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					5FF6EFC2304C0BF500F73C66 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					5FF6EFCE304C0BF500F73C66 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					5FF6EFD8304C0BF500F73C66 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+				};
+			};
+			buildConfigurationList = 5FF6EFA1304C0BF400F73C66 /* Build configuration list for PBXProject "Origami Text Reader" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5FF6EF9D304C0BF400F73C66;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 5FF6EFB2304C0BF500F73C66 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5FF6EFB0304C0BF500F73C66 /* Origami Text Reader (iOS) */,
+				5FF6EFC2304C0BF500F73C66 /* Origami Text Reader (macOS) */,
+				5FF6EFCE304C0BF500F73C66 /* Origami Text Reader Extension (iOS) */,
+				5FF6EFD8304C0BF500F73C66 /* Origami Text Reader Extension (macOS) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5FF6EFAF304C0BF500F73C66 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FF6EFE1304C0BF500F73C66 /* Icon.png in Resources */,
+				5FF6EFBA304C0BF500F73C66 /* LaunchScreen.storyboard in Resources */,
+				5FF6EFDF304C0BF500F73C66 /* Main.html in Resources */,
+				5FF6EFE5304C0BF500F73C66 /* Script.js in Resources */,
+				5FF6EFE9304C0BF500F73C66 /* Assets.xcassets in Resources */,
+				5F60A079304C32C900B671F5 /* Ori-logo-2.icon in Resources */,
+				5FF6EFBD304C0BF500F73C66 /* Main.storyboard in Resources */,
+				5FF6EFE3304C0BF500F73C66 /* Style.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFC1304C0BF500F73C66 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FF6EFE2304C0BF500F73C66 /* Icon.png in Resources */,
+				5FF6EFE4304C0BF500F73C66 /* Style.css in Resources */,
+				5F60A078304C32C900B671F5 /* Ori-logo-2.icon in Resources */,
+				5FF6EFC9304C0BF500F73C66 /* Main.storyboard in Resources */,
+				5FF6EFE6304C0BF500F73C66 /* Script.js in Resources */,
+				5FF6EFEA304C0BF500F73C66 /* Assets.xcassets in Resources */,
+				5FF6EFE0304C0BF500F73C66 /* Main.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFCD304C0BF500F73C66 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FF6F017304C0BF500F73C66 /* test in Resources */,
+				5FF6F016304C0BF500F73C66 /* tools in Resources */,
+				5FF6F01D304C0BF500F73C66 /* manifest.json in Resources */,
+				5FF6F01A304C0BF500F73C66 /* content in Resources */,
+				5FF6F01C304C0BF500F73C66 /* icons in Resources */,
+				5F60A07A304C32C900B671F5 /* Ori-logo-2.icon in Resources */,
+				5FF6F015304C0BF500F73C66 /* make-safari.sh in Resources */,
+				5FF6F014304C0BF500F73C66 /* reader in Resources */,
+				5FF6F019304C0BF500F73C66 /* {lib,reader,content,icons,tools} in Resources */,
+				5FF6F01E304C0BF500F73C66 /* lib in Resources */,
+				5FF6F01B304C0BF500F73C66 /* README.md in Resources */,
+				5FF6F018304C0BF500F73C66 /* background.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFD7304C0BF500F73C66 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FF6F00C304C0BF500F73C66 /* test in Resources */,
+				5FF6F00B304C0BF500F73C66 /* tools in Resources */,
+				5FF6F012304C0BF500F73C66 /* manifest.json in Resources */,
+				5FF6F00F304C0BF500F73C66 /* content in Resources */,
+				5FF6F011304C0BF500F73C66 /* icons in Resources */,
+				5F60A07B304C32C900B671F5 /* Ori-logo-2.icon in Resources */,
+				5FF6F00A304C0BF500F73C66 /* make-safari.sh in Resources */,
+				5FF6F009304C0BF500F73C66 /* reader in Resources */,
+				5FF6F00E304C0BF500F73C66 /* {lib,reader,content,icons,tools} in Resources */,
+				5FF6F013304C0BF500F73C66 /* lib in Resources */,
+				5FF6F010304C0BF500F73C66 /* README.md in Resources */,
+				5FF6F00D304C0BF500F73C66 /* background.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5FF6EFAD304C0BF500F73C66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FF6EFE7304C0BF500F73C66 /* ViewController.swift in Sources */,
+				5FF6EFB5304C0BF500F73C66 /* AppDelegate.swift in Sources */,
+				5FF6EFB7304C0BF500F73C66 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFBF304C0BF500F73C66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FF6EFE8304C0BF500F73C66 /* ViewController.swift in Sources */,
+				5FF6EFC6304C0BF500F73C66 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFCB304C0BF500F73C66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FF6EFEB304C0BF500F73C66 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF6EFD5304C0BF500F73C66 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FF6EFEC304C0BF500F73C66 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5FF6EFD2304C0BF500F73C66 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FF6EFCE304C0BF500F73C66 /* Origami Text Reader Extension (iOS) */;
+			targetProxy = 5FF6EFD1304C0BF500F73C66 /* PBXContainerItemProxy */;
+		};
+		5FF6EFDC304C0BF500F73C66 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FF6EFD8304C0BF500F73C66 /* Origami Text Reader Extension (macOS) */;
+			targetProxy = 5FF6EFDB304C0BF500F73C66 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		5FF6EFA4304C0BF400F73C66 /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5FF6EFA5304C0BF400F73C66 /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		5FF6EFB8304C0BF500F73C66 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5FF6EFB9304C0BF500F73C66 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		5FF6EFBB304C0BF500F73C66 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5FF6EFBC304C0BF500F73C66 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		5FF6EFC7304C0BF500F73C66 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5FF6EFC8304C0BF500F73C66 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5FF6EFED304C0BF500F73C66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		5FF6EFEE304C0BF500F73C66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		5FF6EFF0304C0BF500F73C66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q5N4A727S;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Origami Text Reader Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "info.futuretextlab.origami-reader.Extension";
+				PRODUCT_NAME = "Origami Text Reader Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5FF6EFF1304C0BF500F73C66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q5N4A727S;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Origami Text Reader Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "info.futuretextlab.origami-reader.Extension";
+				PRODUCT_NAME = "Origami Text Reader Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5FF6EFF4304C0BF500F73C66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Ori-logo-2";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q5N4A727S;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Origami Text Reader";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "info.futuretextlab.origami-reader";
+				PRODUCT_NAME = "Origami Text Reader";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5FF6EFF5304C0BF500F73C66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Ori-logo-2";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q5N4A727S;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Origami Text Reader";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "info.futuretextlab.origami-reader";
+				PRODUCT_NAME = "Origami Text Reader";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5FF6EFF7304C0BF500F73C66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q5N4A727S;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Origami Text Reader Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "info.futuretextlab.origami-reader.Extension";
+				PRODUCT_NAME = "Origami Text Reader Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5FF6EFF8304C0BF500F73C66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q5N4A727S;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Origami Text Reader Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "info.futuretextlab.origami-reader.Extension";
+				PRODUCT_NAME = "Origami Text Reader Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		5FF6EFFB304C0BF500F73C66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Ori-logo-2";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q5N4A727S;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Origami Text Reader";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "info.futuretextlab.origami-reader";
+				PRODUCT_NAME = "Origami Text Reader";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5FF6EFFC304C0BF500F73C66 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "Ori-logo-2";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Q5N4A727S;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Origami Text Reader";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "info.futuretextlab.origami-reader";
+				PRODUCT_NAME = "Origami Text Reader";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5FF6EFA1304C0BF400F73C66 /* Build configuration list for PBXProject "Origami Text Reader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FF6EFED304C0BF500F73C66 /* Debug */,
+				5FF6EFEE304C0BF500F73C66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5FF6EFEF304C0BF500F73C66 /* Build configuration list for PBXNativeTarget "Origami Text Reader Extension (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FF6EFF0304C0BF500F73C66 /* Debug */,
+				5FF6EFF1304C0BF500F73C66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5FF6EFF3304C0BF500F73C66 /* Build configuration list for PBXNativeTarget "Origami Text Reader (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FF6EFF4304C0BF500F73C66 /* Debug */,
+				5FF6EFF5304C0BF500F73C66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5FF6EFF6304C0BF500F73C66 /* Build configuration list for PBXNativeTarget "Origami Text Reader Extension (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FF6EFF7304C0BF500F73C66 /* Debug */,
+				5FF6EFF8304C0BF500F73C66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5FF6EFFA304C0BF500F73C66 /* Build configuration list for PBXNativeTarget "Origami Text Reader (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FF6EFFB304C0BF500F73C66 /* Debug */,
+				5FF6EFFC304C0BF500F73C66 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5FF6EF9E304C0BF400F73C66 /* Project object */;
+}

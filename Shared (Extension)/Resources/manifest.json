@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Origami Text Reader",
+  "version": "0.1.0",
+  "description": "Read Origami Text EPUBs in the browser: stretchtext, citation and note popovers, Copy to Cite, and origamitext:// link handling.",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png",
+    "256": "icons/icon-256.png",
+    "512": "icons/icon-512.png"
+  },
+  "action": {
+    "default_title": "Open Origami Reader",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage", "unlimitedStorage", "contextMenus", "activeTab"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["lib/origami-epub.js", "content/carrier-links.js"],
+      "css": ["content/carrier-links.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["reader/reader.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
