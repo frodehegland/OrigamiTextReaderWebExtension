@@ -1,112 +1,230 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Origami Reader</title>
-  <link rel="stylesheet" href="reader.css" />
-</head>
-<body class="theme-light" data-view="home">
-
-  <header class="bar" id="bar">
-    <button class="bar__btn" id="btn-sidebar" type="button" title="Show or hide the side panel (S)" aria-label="Toggle side panel" aria-pressed="true">
-      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3.5h12M2 8h12M2 12.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-    </button>
-    <div class="bar__title" id="bar-title">
-      <span class="bar__name" id="doc-title">Origami Reader</span>
-      <span class="bar__by" id="doc-by"></span>
-    </div>
-    <div class="bar__spacer"></div>
-    <button class="bar__btn" id="btn-home" type="button" title="Open another book">Open</button>
-    <div class="bar__menu" id="menu-text">
-      <button class="bar__btn" id="btn-text" type="button" title="Text size and theme" aria-haspopup="true" aria-expanded="false">Aa</button>
-      <div class="menu" hidden>
-        <div class="menu__row">
-          <span>Size</span>
-          <div class="menu__group">
-            <button type="button" data-size="-1" title="Smaller">−</button>
-            <button type="button" data-size="+1" title="Larger">+</button>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Origami Reader</title>
+    <link rel="stylesheet" href="reader.css" />
+  </head>
+  <body class="theme-light" data-view="home">
+    <header class="bar" id="bar">
+      <button
+        class="bar__btn"
+        id="btn-sidebar"
+        type="button"
+        title="Show or hide the side panel (S)"
+        aria-label="Toggle side panel"
+        aria-pressed="true"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M2 3.5h12M2 8h12M2 12.5h12"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+      <div class="bar__title" id="bar-title">
+        <span class="bar__name" id="doc-title">Origami Reader</span>
+        <span class="bar__by" id="doc-by"></span>
+      </div>
+      <div class="bar__spacer"></div>
+      <button
+        class="bar__btn"
+        id="btn-home"
+        type="button"
+        title="Open another book"
+      >
+        Open
+      </button>
+      <div class="bar__menu" id="menu-text">
+        <button
+          class="bar__btn"
+          id="btn-text"
+          type="button"
+          title="Text size and theme"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Aa
+        </button>
+        <div class="menu" hidden>
+          <div class="menu__row">
+            <span>Size</span>
+            <div class="menu__group">
+              <button type="button" data-size="-1" title="Smaller">−</button>
+              <button type="button" data-size="+1" title="Larger">+</button>
+            </div>
           </div>
-        </div>
-        <div class="menu__row">
-          <span>Theme</span>
-          <div class="menu__group" role="radiogroup" aria-label="Theme">
-            <button type="button" data-theme="light" role="radio" aria-checked="true">Light</button>
-            <button type="button" data-theme="sepia" role="radio" aria-checked="false">Sepia</button>
-            <button type="button" data-theme="dark" role="radio" aria-checked="false">Dark</button>
+          <div class="menu__row">
+            <span>Theme</span>
+            <div class="menu__group" role="radiogroup" aria-label="Theme">
+              <button
+                type="button"
+                data-theme="light"
+                role="radio"
+                aria-checked="true"
+              >
+                Light
+              </button>
+              <button
+                type="button"
+                data-theme="sepia"
+                role="radio"
+                aria-checked="false"
+              >
+                Sepia
+              </button>
+              <button
+                type="button"
+                data-theme="dark"
+                role="radio"
+                aria-checked="false"
+              >
+                Dark
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="menu__row">
-          <span>Book's own style</span>
-          <label class="switch"><input type="checkbox" id="opt-bookcss" checked /><span></span></label>
+          <div class="menu__row">
+            <span>Book's own style</span>
+            <label class="switch"
+              ><input type="checkbox" id="opt-bookcss" checked /><span></span
+            ></label>
+          </div>
         </div>
       </div>
-    </div>
-    <button class="bar__btn" id="btn-address" type="button" title="Copy a link to where you are reading">Copy position</button>
-  </header>
+      <button
+        class="bar__btn"
+        id="btn-address"
+        type="button"
+        title="Copy a link to where you are reading"
+      >
+        Copy position
+      </button>
+    </header>
 
-  <div class="layout" id="layout">
-    <aside class="side" id="side" aria-label="Book panel">
-      <nav class="side__tabs" role="tablist">
-        <button type="button" role="tab" aria-selected="true" data-tab="contents">Contents</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="concepts">Concepts</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="references">References</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="about">About</button>
-      </nav>
-      <div class="side__panel" role="tabpanel" data-panel="contents"><ol class="toc" id="toc"></ol></div>
-      <div class="side__panel" role="tabpanel" data-panel="concepts" hidden><div id="concepts"></div></div>
-      <div class="side__panel" role="tabpanel" data-panel="references" hidden><ol id="references"></ol></div>
-      <div class="side__panel" role="tabpanel" data-panel="about" hidden><div id="about"></div></div>
-    </aside>
-
-    <main class="stage" id="stage">
-      <!-- Home: open a book -->
-      <section class="home" id="home">
-        <div class="home__drop" id="drop" tabindex="0">
-          <div class="home__fold" aria-hidden="true"></div>
-          <h1>Drop an Origami Text EPUB here</h1>
-          <p>or <button type="button" class="link-btn" id="btn-pick">choose a file</button>. Any EPUB will open; Origami ones get stretchtext, citation cards, notes and Copy to Cite.</p>
-          <input type="file" id="file-input" accept=".epub,application/epub+zip" hidden />
-          <form class="home__url" id="url-form">
-            <input type="url" id="url-input" placeholder="https://example.org/paper.epub" aria-label="EPUB web address" />
-            <button type="submit">Fetch</button>
-          </form>
-          <p class="home__status" id="home-status" aria-live="polite"></p>
+    <div class="layout" id="layout">
+      <aside class="side" id="side" aria-label="Book panel">
+        <nav class="side__tabs" role="tablist">
+          <button
+            type="button"
+            role="tab"
+            aria-selected="true"
+            data-tab="contents"
+          >
+            Contents
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-tab="concepts"
+          >
+            Concepts
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-tab="references"
+          >
+            References
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected="false"
+            data-tab="about"
+          >
+            About
+          </button>
+        </nav>
+        <div class="side__panel" role="tabpanel" data-panel="contents">
+          <ol class="toc" id="toc"></ol>
         </div>
-        <section class="library" id="library-section" hidden>
-          <h2>Your library</h2>
-          <p class="library__note">Books you have opened stay in this browser so citation links can find them. Nothing leaves your machine.</p>
-          <ul class="library__list" id="library"></ul>
-        </section>
-      </section>
+        <div class="side__panel" role="tabpanel" data-panel="concepts" hidden>
+          <div id="concepts"></div>
+        </div>
+        <div class="side__panel" role="tabpanel" data-panel="references" hidden>
+          <ol id="references"></ol>
+        </div>
+        <div class="side__panel" role="tabpanel" data-panel="about" hidden>
+          <div id="about"></div>
+        </div>
+      </aside>
 
-      <!-- Reading -->
-      <div class="paper" id="paper">
-        <!-- allow-scripts is required for Safari: WebKit does not fire parent-attached
+      <main class="stage" id="stage">
+        <!-- Home: open a book -->
+        <section class="home" id="home">
+          <div class="home__drop" id="drop" tabindex="0">
+            <div class="home__fold" aria-hidden="true"></div>
+            <h1>Drop an Origami Text EPUB here</h1>
+            <p>
+              or
+              <button type="button" class="link-btn" id="btn-pick">
+                choose a file</button
+              >. Any EPUB will open; Origami ones get stretchtext, citation
+              cards, notes and Copy to Cite.
+            </p>
+            <input
+              type="file"
+              id="file-input"
+              accept=".epub,application/epub+zip"
+              hidden
+            />
+            <form class="home__url" id="url-form">
+              <input
+                type="url"
+                id="url-input"
+                placeholder="https://example.org/paper.epub"
+                aria-label="EPUB web address"
+              />
+              <button type="submit">Fetch</button>
+            </form>
+            <p class="home__status" id="home-status" aria-live="polite"></p>
+          </div>
+          <section class="library" id="library-section" hidden>
+            <h2>Your library</h2>
+            <p class="library__note">
+              Books you have opened stay in this browser so citation links can
+              find them. Nothing leaves your machine.
+            </p>
+            <ul class="library__list" id="library"></ul>
+          </section>
+        </section>
+
+        <!-- Reading -->
+        <div class="paper" id="paper">
+          <!-- allow-scripts is required for Safari: WebKit does not fire parent-attached
              event listeners inside a script-disabled sandbox (WebKit bug 218086).
              No book code can run anyway: reader.js strips scripts, nested frames,
              inline handlers and javascript: URLs before the content goes in. -->
-        <iframe id="frame" title="Book content" sandbox="allow-same-origin allow-scripts"></iframe>
-      </div>
-    </main>
-  </div>
+          <iframe
+            id="frame"
+            title="Book content"
+            sandbox="allow-same-origin allow-scripts"
+          ></iframe>
+        </div>
+      </main>
+    </div>
 
-  <!-- Popover (citations, notes, concepts) -->
-  <div class="popover" id="popover" role="dialog" aria-modal="false" hidden>
-    <div class="popover__body" id="popover-body"></div>
-  </div>
+    <!-- Popover (citations, notes, concepts) -->
+    <div class="popover" id="popover" role="dialog" aria-modal="false" hidden>
+      <div class="popover__body" id="popover-body"></div>
+    </div>
 
-  <!-- Selection toolbar -->
-  <div class="seltool" id="seltool" hidden>
-    <button type="button" id="btn-cite">Copy to cite</button>
-    <button type="button" id="btn-copy-link">Copy link to here</button>
-  </div>
+    <!-- Selection toolbar -->
+    <div class="seltool" id="seltool" hidden>
+      <button type="button" id="btn-cite">Copy to cite</button>
+      <button type="button" id="btn-copy-link">Copy link to here</button>
+    </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
-  <script src="../lib/fflate.min.js"></script>
-  <script src="../lib/origami-epub.js"></script>
-  <script src="../lib/library.js"></script>
-  <script src="reader.js"></script>
-</body>
+    <script src="../lib/fflate.min.js"></script>
+    <script src="../lib/origami-epub.js"></script>
+    <script src="../lib/library.js"></script>
+    <script src="reader.js"></script>
+  </body>
 </html>

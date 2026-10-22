@@ -1,6 +1,6 @@
 /* Origami carrier-link cards, injected on every page. Namespaced to avoid host clashes. */
 a[data-origami-link] {
-  text-decoration-color: #34428C;
+  text-decoration-color: #34428c;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 2px;
 }
@@ -14,26 +14,83 @@ a[data-origami-link] {
   border: 1px solid #c9c9c3;
   border-radius: 8px;
   box-shadow: 0 6px 24px rgba(30, 30, 60, 0.18);
-  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font:
+    13px/1.4 -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
   opacity: 0;
   pointer-events: none;
   transition: opacity 120ms ease-out;
 }
-.origami-link-card.is-visible { opacity: 1; pointer-events: auto; }
-.origami-link-card__kind { color: #66665f; font-size: 12px; margin-bottom: 4px; }
-.origami-link-card__id { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px; word-break: break-all; }
-.origami-link-card__frag { color: #34428C; margin-left: 2px; }
-.origami-link-card__quote { margin: 8px 0 0; padding: 0 0 0 10px; border-left: 2px solid #34428C; font-style: italic; color: #333; }
-.origami-link-card__actions { display: flex; gap: 6px; margin-top: 10px; }
-.origami-link-card__btn {
-  appearance: none; border: 1px solid #c9c9c3; background: #f6f6f3; color: #1c1c1a;
-  border-radius: 6px; padding: 4px 10px; font: inherit; font-size: 12.5px; cursor: pointer;
+.origami-link-card.is-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
-.origami-link-card__btn:first-child { background: #34428C; border-color: #34428C; color: #fff; }
-.origami-link-card__btn:focus-visible { outline: 2px solid #34428C; outline-offset: 2px; }
+.origami-link-card__kind {
+  color: #66665f;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.origami-link-card__id {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  word-break: break-all;
+}
+.origami-link-card__frag {
+  color: #34428c;
+  margin-left: 2px;
+}
+.origami-link-card__quote {
+  margin: 8px 0 0;
+  padding: 0 0 0 10px;
+  border-left: 2px solid #34428c;
+  font-style: italic;
+  color: #333;
+}
+.origami-link-card__actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.origami-link-card__btn {
+  appearance: none;
+  border: 1px solid #c9c9c3;
+  background: #f6f6f3;
+  color: #1c1c1a;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.origami-link-card__btn:first-child {
+  background: #34428c;
+  border-color: #34428c;
+  color: #fff;
+}
+.origami-link-card__btn:focus-visible {
+  outline: 2px solid #34428c;
+  outline-offset: 2px;
+}
 @media (prefers-color-scheme: dark) {
-  .origami-link-card { background: #1f2024; color: #e8e6df; border-color: #3a3b41; }
-  .origami-link-card__kind { color: #a09f96; }
-  .origami-link-card__quote { color: #cfcdc4; }
-  .origami-link-card__btn { background: #2a2b31; color: #e8e6df; border-color: #3a3b41; }
+  .origami-link-card {
+    background: #1f2024;
+    color: #e8e6df;
+    border-color: #3a3b41;
+  }
+  .origami-link-card__kind {
+    color: #a09f96;
+  }
+  .origami-link-card__quote {
+    color: #cfcdc4;
+  }
+  .origami-link-card__btn {
+    background: #2a2b31;
+    color: #e8e6df;
+    border-color: #3a3b41;
+  }
 }
