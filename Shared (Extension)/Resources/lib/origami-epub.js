@@ -392,7 +392,7 @@
       book.warnings.push(
         "Origami profile expects a single spine item; found " +
           book.spine.length +
-          ". Reading the first.",
+          ". The reader will follow the EPUB spine order.",
       );
     }
 

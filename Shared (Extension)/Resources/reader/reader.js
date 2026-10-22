@@ -38,6 +38,10 @@
     seltool: $("seltool"),
     toast: $("toast"),
     side: $("side"),
+    chapterNav: $("chapter-nav"),
+    prevChapter: $("btn-prev-chapter"),
+    nextChapter: $("btn-next-chapter"),
+    chapterProgress: $("chapter-progress"),
   };
 
   const state = {
@@ -46,6 +50,7 @@
     sourceName: "",
     idoc: null,
     iwin: null,
+    spineIndex: 0,
     blobURLs: [],
     addressed: [],
     prefs: { theme: "light", fontSize: 18, bookCSS: true, side: "open" },
@@ -236,19 +241,18 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     await openBytes(
       new Uint8Array(await rec.blob.arrayBuffer()),
       rec.sourceName,
-      {
-        fromLibrary: true,
-      },
+      { fromLibrary: true },
     );
     L.touch(rec.key);
   }
 
-  async function openBytes(bytes, sourceName, opts = {}) {
+  async function openBytes(bytes, sourceName) {
     const book = await O.open(bytes);
     closeBook();
     state.book = book;
     state.bytes = bytes;
     state.sourceName = sourceName || "";
+    state.spineIndex = 0;
     try {
       await L.save(book, bytes, sourceName);
     } catch (e) {
@@ -261,18 +265,74 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     await afterRender();
   }
 
-  function closeBook() {
-    for (const u of state.blobURLs) URL.revokeObjectURL(u);
+  function revokeBlobURLs() {
+    for (const url of state.blobURLs) {
+      URL.revokeObjectURL(url);
+    }
+
     state.blobURLs = [];
+  }
+
+  function closeBook() {
+    revokeBlobURLs();
     state.addressed = [];
     state.idoc = null;
     state.iwin = null;
+    state.spineIndex = 0;
     state.furthestIndex = 0;
     hidePopover();
     ui.seltool.hidden = true;
   }
 
   // ------------------------------------------------------------------ rendering
+  function currentSpineItem() {
+    const item = state.book?.spine[state.spineIndex];
+
+    if (!item) {
+      throw new Error(
+        `Chapter ${state.spineIndex + 1} is missing from the EPUB spine.`,
+      );
+    }
+
+    return item;
+  }
+
+  function updateChapterNavigation() {
+    const total = state.book?.spine.length ?? 0;
+    const current = state.spineIndex;
+    console.log("Navigation total:", total);
+
+    console.log(
+      "EPUB spine:",
+      total,
+      state.book?.spine.map((item) => item.path),
+    );
+
+    ui.chapterNav.hidden = total <= 1;
+    ui.prevChapter.disabled = current <= 0;
+    ui.nextChapter.disabled = current >= total - 1;
+
+    ui.chapterProgress.textContent =
+      total > 0 ? `${current + 1} / ${total}` : "";
+  }
+
+  function showChapter(index) {
+    const total = state.book?.spine.length ?? 0;
+
+    if (!Number.isInteger(index)) return;
+    if (index < 0 || index >= total) return;
+    if (index === state.spineIndex) return;
+
+    state.spineIndex = index;
+    state.furthestIndex = 0;
+
+    hidePopover();
+    ui.seltool.hidden = true;
+
+    renderBook();
+    state.iwin.scrollTo({ top: 0, behavior: "auto" });
+  }
+
   function parseContent(text) {
     let doc = new DOMParser().parseFromString(text, "application/xhtml+xml");
     if (doc.getElementsByTagName("parsererror").length) {
@@ -286,7 +346,14 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
 
   function renderBook() {
     const book = state.book;
-    const src = parseContent(book.contentText);
+    const currentItem = currentSpineItem();
+    const contentText = book.text(currentItem.path);
+
+    if (contentText == null) {
+      throw new Error(`Cannot read EPUB chapter: ${currentItem.path}`);
+    }
+    revokeBlobURLs();
+    const src = parseContent(contentText);
     // CDATA sections (the embedded Visual-Meta) cannot live in an HTML document: turn them into text first.
     const cdWalker = src.createTreeWalker(
       src,
@@ -360,7 +427,7 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     // Book stylesheet(s) referenced by the content document, then reader styles
     const cssText = [];
     for (const href of styleLinks) {
-      const p = book.resolve(book.contentItem.path, href);
+      const p = book.resolve(currentItem.path, href);
       if (p && book.has(p)) cssText.push(book.text(p));
     }
     if (!cssText.length)
@@ -380,10 +447,7 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
       body.querySelectorAll("img[src], image[href]"),
     )) {
       const attr = img.hasAttribute("src") ? "src" : "href";
-      const p = book.resolve(
-        book.contentItem.path,
-        img.getAttribute(attr) || "",
-      );
+      const p = book.resolve(currentItem.path, img.getAttribute(attr) || "");
       if (!p) continue;
       const bytes = book.bytes(p);
       if (!bytes) {
@@ -429,6 +493,7 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     ui.docTitle.textContent = book.title;
     ui.docBy.textContent =
       book.authors.join(", ") + (book.date ? " · " + book.date : "");
+    updateChapterNavigation();
   }
 
   // ------------------------------------------------------------------ behaviours inside the book
@@ -1159,9 +1224,7 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
       try {
         item["web application/x-origami-citation+json"] = new Blob(
           [JSON.stringify(p.json)],
-          {
-            type: "web application/x-origami-citation+json",
-          },
+          { type: "web application/x-origami-citation+json" },
         );
       } catch (_) {
         /* custom formats unsupported here */
@@ -1608,6 +1671,13 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
       renderLibrary();
       hidePopover();
       ui.seltool.hidden = true;
+    };
+    ui.prevChapter.onclick = () => {
+      showChapter(state.spineIndex - 1);
+    };
+
+    ui.nextChapter.onclick = () => {
+      showChapter(state.spineIndex + 1);
     };
     $("btn-pick").onclick = () => ui.fileInput.click();
     ui.fileInput.onchange = () => {

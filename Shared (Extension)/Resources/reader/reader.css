@@ -649,6 +649,39 @@ body.theme-dark .toast {
   color: #141518;
 }
 
+.chapter-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.chapter-nav[hidden] {
+  display: none;
+}
+
+.chapter-nav__progress {
+  min-width: 3.5rem;
+  color: var(--ink-2);
+  font-size: 0.85rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.bar__btn:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.bar__btn:disabled:hover {
+  color: var(--ink-2);
+  background: transparent;
+}
+
+body[data-view="home"] .chapter-nav {
+  display: none;
+}
+
+
 @media (max-width: 720px) {
   :root {
     --side-w: 240px;

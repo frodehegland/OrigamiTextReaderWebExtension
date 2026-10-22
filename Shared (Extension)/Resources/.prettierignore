@@ -1,0 +1,5 @@
+lib/fflate.min.js
+node_modules/
+coverage/
+dist/
+build/
