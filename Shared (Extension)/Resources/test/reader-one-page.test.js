@@ -68,7 +68,7 @@ async function main() {
   book.files.set(
     secondPath,
     new TextEncoder().encode(
-      '<html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" href="second.css"/><style media="print">#second { display: none; }</style></head><body><h2 id="second" class="second-chapter" onclick="alert(1)">Second spine chapter</h2><p>End of whole book</p><img src="../images/fold.png"/><script>alert(1)</script></body></html>',
+      '<html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" href="second.css"/><style media="print">#second { display: none; }</style></head><body><h2 id="second" class="second-chapter" onclick="alert(1)">Second spine chapter</h2><p>End of whole book</p><img src="../images/fold.png"/><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image xlink:href="../images/fold.png"/></svg><script>alert(1)</script></body></html>',
     ),
   );
   book.spine.push({
@@ -117,6 +117,15 @@ async function main() {
     ),
     "the book CSS switch should disable linked and inline styles",
   );
+  const readerStyle = frame.contentDocument.getElementById("ot-reader-css");
+  const coverRule = Array.from(readerStyle.sheet.cssRules).find(
+    (rule) => rule.selectorText === ".x-ebookmaker-cover",
+  );
+  assert.equal(
+    coverRule?.style.getPropertyValue("background-color"),
+    "transparent",
+    "reader CSS should remove the EPUB cover backdrop",
+  );
   assert.ok(body.textContent.includes("Folding the Page"));
   assert.ok(body.textContent.includes("Second spine chapter"));
   assert.ok(body.textContent.includes("End of whole book"));
@@ -131,6 +140,11 @@ async function main() {
   );
   const secondImage = body.querySelector("#second + p + img");
   assert.ok(secondImage.getAttribute("src").startsWith("blob:"));
+  const svgImage = body.querySelector("svg image");
+  assert.ok(
+    svgImage.getAttribute("xlink:href")?.startsWith("blob:"),
+    "SVG xlink:href image should load from the EPUB archive",
+  );
   assert.equal(body.querySelector("#second").hasAttribute("onclick"), false);
   assert.ok(
     !body.querySelector('script:not([type="application/json"])'),

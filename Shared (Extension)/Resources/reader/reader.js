@@ -174,6 +174,7 @@ a { color: var(--ot-fold) !important; }
 h1, h2, h3, h4 { line-height: 1.25; scroll-margin-top: 20px; }
 [id] { scroll-margin-top: 24px; }
 img { max-width: 100%; height: auto; }
+.x-ebookmaker-cover { background-color: transparent !important; }
 table { border-collapse: collapse; }
 td, th { border: 1px solid var(--ot-line); padding: 0.3em 0.6em; text-align: left; }
 a.citation { text-decoration: none; padding: 0 0.15em; border-radius: 3px; cursor: pointer; }
@@ -403,13 +404,16 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
           body.setAttribute(attr.name, attr.value);
         }
       }
-      const images = sourceBody.querySelectorAll("img[src], image[href]");
+      const images = sourceBody.querySelectorAll("img[src], svg image");
       for (const image of images) {
-        const attribute = image.hasAttribute("src") ? "src" : "href";
-        const path = book.resolve(
-          item.path,
-          image.getAttribute(attribute) || "",
-        );
+        const attribute = image.hasAttribute("src")
+          ? "src"
+          : image.hasAttribute("href")
+            ? "href"
+            : "xlink:href";
+        const href = image.getAttribute(attribute);
+        if (!href) continue;
+        const path = book.resolve(item.path, href);
         if (!path) continue;
         const bytes = book.bytes(path);
         if (!bytes) {
@@ -423,7 +427,11 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
           }),
         );
         state.blobURLs.push(url);
-        image.setAttribute(attribute, url);
+        if (attribute === "xlink:href") {
+          image.setAttributeNS("http://www.w3.org/1999/xlink", attribute, url);
+        } else {
+          image.setAttribute(attribute, url);
+        }
       }
       for (const child of Array.from(sourceBody.childNodes)) {
         body.appendChild(idoc.importNode(child, true));
