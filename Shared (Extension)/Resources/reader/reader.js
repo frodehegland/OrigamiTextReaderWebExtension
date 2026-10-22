@@ -38,10 +38,6 @@
     seltool: $("seltool"),
     toast: $("toast"),
     side: $("side"),
-    chapterNav: $("chapter-nav"),
-    prevChapter: $("btn-prev-chapter"),
-    nextChapter: $("btn-next-chapter"),
-    chapterProgress: $("chapter-progress"),
   };
 
   const state = {
@@ -50,7 +46,6 @@
     sourceName: "",
     idoc: null,
     iwin: null,
-    spineIndex: 0,
     blobURLs: [],
     addressed: [],
     prefs: { theme: "light", fontSize: 18, bookCSS: true, side: "open" },
@@ -162,8 +157,9 @@
     root.style.setProperty("--ot-mark", t.mark);
     root.style.setProperty("--ot-line", t.line);
     root.style.setProperty("--ot-size", state.prefs.fontSize + "px");
-    const bookCss = state.idoc.getElementById("ot-book-css");
-    if (bookCss) bookCss.disabled = !state.prefs.bookCSS;
+    for (const style of state.idoc.querySelectorAll(".ot-book-css")) {
+      style.disabled = !state.prefs.bookCSS;
+    }
   }
 
   /** Reader stylesheet injected into the book. Layered after the book's CSS so theme wins. */
@@ -252,17 +248,21 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     state.book = book;
     state.bytes = bytes;
     state.sourceName = sourceName || "";
-    state.spineIndex = 0;
     try {
       await L.save(book, bytes, sourceName);
     } catch (e) {
       console.warn("library save failed", e);
     }
-    renderBook();
-    ui.body.dataset.view = "reading";
-    document.title = book.title + " — Origami Reader";
-    setHomeStatus("");
-    await afterRender();
+    ui.frame.style.visibility = "hidden";
+    try {
+      renderBook();
+      ui.body.dataset.view = "reading";
+      document.title = book.title + " — Origami Reader";
+      setHomeStatus("");
+      await afterRender();
+    } finally {
+      ui.frame.style.visibility = "";
+    }
   }
 
   function revokeBlobURLs() {
@@ -274,65 +274,22 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
   }
 
   function closeBook() {
+    clearTimeout(state.scrollTimer);
+    state.scrollTimer = null;
+    if (state.iwin) {
+      savePosition();
+      state.iwin.removeEventListener("scroll", onScroll);
+    }
     revokeBlobURLs();
     state.addressed = [];
     state.idoc = null;
     state.iwin = null;
-    state.spineIndex = 0;
     state.furthestIndex = 0;
     hidePopover();
     ui.seltool.hidden = true;
   }
 
   // ------------------------------------------------------------------ rendering
-  function currentSpineItem() {
-    const item = state.book?.spine[state.spineIndex];
-
-    if (!item) {
-      throw new Error(
-        `Chapter ${state.spineIndex + 1} is missing from the EPUB spine.`,
-      );
-    }
-
-    return item;
-  }
-
-  function updateChapterNavigation() {
-    const total = state.book?.spine.length ?? 0;
-    const current = state.spineIndex;
-    console.log("Navigation total:", total);
-
-    console.log(
-      "EPUB spine:",
-      total,
-      state.book?.spine.map((item) => item.path),
-    );
-
-    ui.chapterNav.hidden = total <= 1;
-    ui.prevChapter.disabled = current <= 0;
-    ui.nextChapter.disabled = current >= total - 1;
-
-    ui.chapterProgress.textContent =
-      total > 0 ? `${current + 1} / ${total}` : "";
-  }
-
-  function showChapter(index) {
-    const total = state.book?.spine.length ?? 0;
-
-    if (!Number.isInteger(index)) return;
-    if (index < 0 || index >= total) return;
-    if (index === state.spineIndex) return;
-
-    state.spineIndex = index;
-    state.furthestIndex = 0;
-
-    hidePopover();
-    ui.seltool.hidden = true;
-
-    renderBook();
-    state.iwin.scrollTo({ top: 0, behavior: "auto" });
-  }
-
   function parseContent(text) {
     let doc = new DOMParser().parseFromString(text, "application/xhtml+xml");
     if (doc.getElementsByTagName("parsererror").length) {
@@ -346,146 +303,177 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
 
   function renderBook() {
     const book = state.book;
-    const currentItem = currentSpineItem();
-    const contentText = book.text(currentItem.path);
-
-    if (contentText == null) {
-      throw new Error(`Cannot read EPUB chapter: ${currentItem.path}`);
-    }
-    revokeBlobURLs();
-    const src = parseContent(contentText);
-    // CDATA sections (the embedded Visual-Meta) cannot live in an HTML document: turn them into text first.
-    const cdWalker = src.createTreeWalker(
-      src,
-      NodeFilter.SHOW_CDATA_SECTION,
-      null,
-    );
-    const cdatas = [];
-    let cd;
-    while ((cd = cdWalker.nextNode())) cdatas.push(cd);
-    for (const c of cdatas)
-      c.parentNode.replaceChild(src.createTextNode(c.nodeValue), c);
-    // Collect the book's stylesheet links, then drop them from the source so the sandbox never fetches them.
-    const styleLinks = Array.from(
-      src.querySelectorAll('link[rel~="stylesheet"]'),
-    ).map((l) => l.getAttribute("href") || "");
-    for (const l of Array.from(
-      src.querySelectorAll("link, base, script:not(#visual-meta-payload)"),
-    ))
-      l.remove();
     const idoc = ui.frame.contentDocument;
+    revokeBlobURLs();
     state.idoc = idoc;
     state.iwin = ui.frame.contentWindow;
 
-    // Fresh document
     while (idoc.documentElement) idoc.removeChild(idoc.documentElement);
-    idoc.appendChild(idoc.importNode(src.documentElement, true));
-    const html = idoc.documentElement;
-    let head = html.querySelector("head");
-    if (!head) {
-      head = idoc.createElement("head");
-      html.insertBefore(head, html.firstChild);
-    }
-    const body =
-      html.querySelector("body") ||
-      html.appendChild(idoc.createElement("body"));
+    const html = idoc.createElement("html");
+    const head = idoc.createElement("head");
+    const body = idoc.createElement("body");
+    html.append(head, body);
+    idoc.appendChild(html);
 
-    // Strip anything the sandbox should not carry. The frame runs with
-    // allow-scripts (Safari refuses to fire parent-attached listeners in a
-    // script-disabled sandbox — WebKit bug 218086), so nothing executable may
-    // survive: no scripts, no nested browsing contexts, no inline handlers,
-    // no javascript: URLs; the Visual-Meta payload stays but is forced inert.
-    for (const s of Array.from(html.querySelectorAll("script"))) {
-      if (s.id !== "visual-meta-payload") s.remove();
-    }
-    for (const n of Array.from(
-      html.querySelectorAll("iframe, frame, embed, object"),
-    ))
-      n.remove();
-    for (const l of Array.from(
-      head.querySelectorAll('link[rel~="stylesheet"], base'),
-    ))
-      l.remove();
-    const vmPayload = html.querySelector("script#visual-meta-payload");
-    if (vmPayload) vmPayload.setAttribute("type", "application/json");
-    const sanitizeWalker = idoc.createTreeWalker(
-      html,
-      NodeFilter.SHOW_ELEMENT,
-      null,
-    );
-    for (let e = html; e; e = sanitizeWalker.nextNode()) {
-      for (const at of Array.from(e.attributes)) {
-        if (/^on/i.test(at.name)) e.removeAttribute(at.name);
-        else if (
-          /^\s*javascript:/i.test(at.value) &&
-          /(^|:)(href|src|action|formaction|data)$/i.test(at.name)
-        )
-          e.removeAttribute(at.name);
+    const cssPaths = [];
+    const inlineStyles = [];
+    const assets = Object.values(book.manifest);
+
+    for (const item of book.spine) {
+      const content = book.text(item.path);
+      if (content == null) {
+        throw new Error("Cannot read EPUB chapter: " + item.path);
+      }
+      const source = parseContent(content);
+
+      // Visual-Meta CDATA must become text before entering the HTML iframe.
+      const walker = source.createTreeWalker(
+        source,
+        NodeFilter.SHOW_CDATA_SECTION,
+      );
+      const cdatas = [];
+      let cdata;
+      while ((cdata = walker.nextNode())) cdatas.push(cdata);
+      for (const node of cdatas) {
+        node.parentNode.replaceChild(
+          source.createTextNode(node.nodeValue),
+          node,
+        );
+      }
+
+      const stylesheetLinks = source.querySelectorAll(
+        'link[rel~="stylesheet"]',
+      );
+      for (const link of stylesheetLinks) {
+        const path = book.resolve(item.path, link.getAttribute("href") || "");
+        if (path && book.has(path) && !cssPaths.includes(path)) {
+          cssPaths.push(path);
+        }
+      }
+      const styleElements = source.querySelectorAll("style");
+      for (const style of styleElements) {
+        const entry = {
+          css: style.textContent,
+          media: style.getAttribute("media") || "",
+          type: style.getAttribute("type") || "",
+        };
+        const seen = inlineStyles.some(
+          (saved) =>
+            saved.css === entry.css &&
+            saved.media === entry.media &&
+            saved.type === entry.type,
+        );
+        if (!seen) {
+          inlineStyles.push(entry);
+        }
+        style.remove();
+      }
+
+      // The iframe runs our listeners, so imported book HTML cannot run scripts.
+      const scripts = source.querySelectorAll("script");
+      for (const script of scripts) {
+        if (script.id === "visual-meta-payload") {
+          script.setAttribute("type", "application/json");
+        } else {
+          script.remove();
+        }
+      }
+      const unsafeElements = source.querySelectorAll(
+        "link, base, iframe, frame, embed, object, meta[http-equiv]",
+      );
+      for (const element of unsafeElements) element.remove();
+      const elements = source.querySelectorAll("*");
+      for (const element of elements) {
+        for (const attr of Array.from(element.attributes)) {
+          const executableURL =
+            /(^|:)(href|src|action|formaction|data)$/i.test(attr.name) &&
+            /^\s*javascript:/i.test(attr.value);
+          if (/^on/i.test(attr.name) || executableURL) {
+            element.removeAttribute(attr.name);
+          }
+        }
+      }
+
+      const sourceBody = source.querySelector("body") || source.documentElement;
+      if (item === book.spine[0]) {
+        for (const attr of source.documentElement.attributes) {
+          html.setAttribute(attr.name, attr.value);
+        }
+        for (const attr of sourceBody.attributes) {
+          body.setAttribute(attr.name, attr.value);
+        }
+      }
+      const images = sourceBody.querySelectorAll("img[src], image[href]");
+      for (const image of images) {
+        const attribute = image.hasAttribute("src") ? "src" : "href";
+        const path = book.resolve(
+          item.path,
+          image.getAttribute(attribute) || "",
+        );
+        if (!path) continue;
+        const bytes = book.bytes(path);
+        if (!bytes) {
+          image.setAttribute("data-ot-missing", path);
+          continue;
+        }
+        const asset = assets.find((entry) => entry.path === path);
+        const url = URL.createObjectURL(
+          new Blob([bytes], {
+            type: asset?.mediaType || "application/octet-stream",
+          }),
+        );
+        state.blobURLs.push(url);
+        image.setAttribute(attribute, url);
+      }
+      for (const child of Array.from(sourceBody.childNodes)) {
+        body.appendChild(idoc.importNode(child, true));
       }
     }
 
-    // Book stylesheet(s) referenced by the content document, then reader styles
-    const cssText = [];
-    for (const href of styleLinks) {
-      const p = book.resolve(currentItem.path, href);
-      if (p && book.has(p)) cssText.push(book.text(p));
+    if (!cssPaths.length) {
+      for (const item of book.cssItems) {
+        if (book.has(item.path)) cssPaths.push(item.path);
+      }
     }
-    if (!cssText.length)
-      for (const c of book.cssItems)
-        if (book.has(c.path)) cssText.push(book.text(c.path));
     const bookStyle = idoc.createElement("style");
     bookStyle.id = "ot-book-css";
-    bookStyle.textContent = cssText.join("\n");
+    bookStyle.className = "ot-book-css";
+    bookStyle.textContent = cssPaths.map((path) => book.text(path)).join("\n");
     head.appendChild(bookStyle);
+    for (const entry of inlineStyles) {
+      const style = idoc.createElement("style");
+      style.className = "ot-book-css";
+      style.textContent = entry.css;
+      if (entry.media) style.setAttribute("media", entry.media);
+      if (entry.type) style.setAttribute("type", entry.type);
+      head.appendChild(style);
+    }
+
     const readerStyle = idoc.createElement("style");
     readerStyle.id = "ot-reader-css";
     readerStyle.textContent = readerStyles();
     head.appendChild(readerStyle);
 
-    // Images → blob URLs
-    for (const img of Array.from(
-      body.querySelectorAll("img[src], image[href]"),
-    )) {
-      const attr = img.hasAttribute("src") ? "src" : "href";
-      const p = book.resolve(currentItem.path, img.getAttribute(attr) || "");
-      if (!p) continue;
-      const bytes = book.bytes(p);
-      if (!bytes) {
-        img.setAttribute("data-ot-missing", p);
-        continue;
-      }
-      const item = Object.values(book.manifest).find((i) => i.path === p);
-      const url = URL.createObjectURL(
-        new Blob([bytes], {
-          type: (item && item.mediaType) || "application/octet-stream",
-        }),
-      );
-      state.blobURLs.push(url);
-      img.setAttribute(attr, url);
-    }
-
-    // Visual-Meta appendix: metadata, not content — hidden behind a toggle
     const vmSection = idoc.getElementById("visual-meta");
     if (vmSection) {
       const wrap = idoc.createElement("div");
       wrap.className = "ot-meta-toggle";
-      const btn = idoc.createElement("button");
-      btn.type = "button";
-      btn.textContent = "Show Visual-Meta";
-      btn.setAttribute("aria-expanded", "false");
-      btn.addEventListener("click", () => {
+      const button = idoc.createElement("button");
+      button.type = "button";
+      button.textContent = "Show Visual-Meta";
+      button.setAttribute("aria-expanded", "false");
+      button.addEventListener("click", () => {
         const shown = vmSection.classList.toggle("ot-shown");
-        btn.textContent = shown ? "Hide Visual-Meta" : "Show Visual-Meta";
-        btn.setAttribute("aria-expanded", shown ? "true" : "false");
+        button.textContent = shown ? "Hide Visual-Meta" : "Show Visual-Meta";
+        button.setAttribute("aria-expanded", String(shown));
       });
-      wrap.appendChild(btn);
+      wrap.appendChild(button);
       vmSection.parentNode.insertBefore(wrap, vmSection);
     }
 
-    // Addressed elements in reading order (main first, then anything else with ids, excluding the appendix)
     state.addressed = Array.from(
       body.querySelectorAll("[data-id], main [id]"),
-    ).filter((e) => !e.closest("#visual-meta"));
+    ).filter((element) => !element.closest("#visual-meta"));
 
     applyFrameTheme();
     wireContent(body);
@@ -493,7 +481,6 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     ui.docTitle.textContent = book.title;
     ui.docBy.textContent =
       book.authors.join(", ") + (book.date ? " · " + book.date : "");
-    updateChapterNavigation();
   }
 
   // ------------------------------------------------------------------ behaviours inside the book
@@ -1289,19 +1276,19 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
 
   function savePosition() {
     const book = state.book;
-    if (!book) return;
+    if (!book || !state.iwin) return;
     const key = book.identifier || book.origamiId;
     if (!key) return;
     const i = currentElementIndex();
-    if (i < 0) return;
-    const e = state.addressed[i];
-    state.furthestIndex = Math.max(state.furthestIndex, i);
-    const f = state.addressed[state.furthestIndex];
+    const e = state.addressed[i] || null;
+    if (i >= 0) state.furthestIndex = Math.max(state.furthestIndex, i);
+    const f = state.addressed[state.furthestIndex] || null;
     const pos = {
-      dataId: e.getAttribute("data-id") || "",
-      id: e.id || "",
-      furthestDataId: f.getAttribute("data-id") || "",
-      furthestId: f.id || "",
+      scrollY: Math.max(0, state.iwin.scrollY),
+      dataId: e?.getAttribute("data-id") || "",
+      id: e?.id || "",
+      furthestDataId: f?.getAttribute("data-id") || "",
+      furthestId: f?.id || "",
       origamiId: book.origamiId,
       identifier: book.identifier,
       title: book.title,
@@ -1314,6 +1301,12 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     const book = state.book;
     const pos = await L.getPosition(book.identifier || book.origamiId);
     if (!pos) return false;
+    if (Number.isFinite(pos.scrollY) && pos.scrollY >= 0) {
+      await new Promise((resolve) => state.iwin.requestAnimationFrame(resolve));
+      state.iwin.scrollTo({ top: pos.scrollY, behavior: "instant" });
+      toast("Back where you left off", 1400);
+      return true;
+    }
     const frag = pos.dataId && findTarget(pos.dataId) ? pos.dataId : pos.id;
     if (!frag) return false;
     const fi = state.addressed.findIndex(
@@ -1671,13 +1664,6 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
       renderLibrary();
       hidePopover();
       ui.seltool.hidden = true;
-    };
-    ui.prevChapter.onclick = () => {
-      showChapter(state.spineIndex - 1);
-    };
-
-    ui.nextChapter.onclick = () => {
-      showChapter(state.spineIndex + 1);
     };
     $("btn-pick").onclick = () => ui.fileInput.click();
     ui.fileInput.onchange = () => {
