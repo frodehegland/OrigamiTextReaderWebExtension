@@ -498,18 +498,19 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
         followOrigamiLink(olink);
         return;
       }
-      if (href.startsWith("#")) {
-        navigateTo(decodeURIComponent(href.slice(1)));
-        return;
-      }
       if (/^[a-z][a-z0-9+.-]*:/i.test(href)) {
         window.open(href, "_blank", "noopener");
         return;
       }
-      // relative link inside the package: try as fragment on the content doc
-      if (href.includes("#")) {
-        navigateTo(decodeURIComponent(href.split("#")[1]));
-      }
+      if (!href || href.startsWith("//")) return;
+
+      const fromPath = spinePathOf(a);
+      if (!fromPath) return;
+      const hash = href.indexOf("#");
+      const file = (hash < 0 ? href : href.slice(0, hash)).split("?")[0];
+      const path = file ? state.book.resolve(fromPath, file) : fromPath;
+      const frag = hash < 0 ? null : decodeURIComponent(href.slice(hash + 1));
+      if (path) navigateTo(frag, { path });
     });
 
     body.addEventListener("keydown", (ev) => {
@@ -601,6 +602,17 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
       ) ||
       null
     );
+  }
+
+  function spinePathOf(element) {
+    let root = element;
+    while (root.parentNode && root.parentNode !== state.idoc.body) {
+      root = root.parentNode;
+    }
+    for (const [path, nodes] of state.spineNodes) {
+      if (nodes.includes(root)) return path;
+    }
+    return null;
   }
 
   /** Resolve by id, then data-id; expand hidden stretchtext ancestors first; scroll; flash. */
