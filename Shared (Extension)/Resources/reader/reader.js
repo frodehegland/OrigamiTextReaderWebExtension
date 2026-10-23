@@ -48,6 +48,7 @@
     iwin: null,
     blobURLs: [],
     addressed: [],
+    spineNodes: new Map(),
     prefs: { theme: "light", fontSize: 18, bookCSS: true, side: "open" },
     pending: null, // {id, q, fragment} from a link we could not resolve yet
     saveTimer: null,
@@ -306,6 +307,7 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     const book = state.book;
     const idoc = ui.frame.contentDocument;
     revokeBlobURLs();
+    state.spineNodes.clear();
     state.idoc = idoc;
     state.iwin = ui.frame.contentWindow;
 
@@ -397,9 +399,13 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
           image.setAttribute(attribute, url);
         }
       }
+      const nodes = [];
       for (const child of Array.from(sourceBody.childNodes)) {
-        body.appendChild(idoc.importNode(child, true));
+        const node = idoc.importNode(child, true);
+        body.appendChild(node);
+        nodes.push(node);
       }
+      state.spineNodes.set(item.path, nodes);
     }
 
     if (!cssPaths.length) {
@@ -569,14 +575,43 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     return el;
   }
 
+  function findSpineTarget(path, frag) {
+    const nodes = state.spineNodes.get(path);
+    if (!nodes) return null;
+
+    const elements = [];
+    for (const node of nodes) {
+      if (node.nodeType !== 1) continue;
+      if (!frag) return node;
+      elements.push(node);
+      for (const child of node.querySelectorAll("[id], [data-id]")) {
+        elements.push(child);
+      }
+    }
+
+    const matches = (element, value) =>
+      element.id === value || element.getAttribute("data-id") === value;
+    const lower = frag.toLowerCase();
+    return (
+      elements.find((element) => matches(element, frag)) ||
+      elements.find((element) =>
+        [element.id, element.getAttribute("data-id")].some(
+          (value) => value && value.toLowerCase() === lower,
+        ),
+      ) ||
+      null
+    );
+  }
+
   /** Resolve by id, then data-id; expand hidden stretchtext ancestors first; scroll; flash. */
   function navigateTo(
     frag,
-    { quote = null, flash = true, behavior = "smooth" } = {},
+    { quote = null, flash = true, behavior = "smooth", path = null } = {},
   ) {
-    const el = findTarget(frag);
+    const el = path ? findSpineTarget(path, frag) : findTarget(frag);
     if (!el) {
-      toast('No element "' + frag + '" in this document', 2200);
+      const address = path ? path + (frag ? "#" + frag : "") : frag;
+      toast('No element "' + address + '" in this document', 2200);
       return false;
     }
     let p = el;
@@ -1350,7 +1385,7 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
         );
         a.onclick = (ev) => {
           ev.preventDefault();
-          if (it.fragment) navigateTo(it.fragment);
+          if (it.path) navigateTo(it.fragment, { path: it.path });
           else state.iwin.scrollTo({ top: 0 });
         };
         li.appendChild(a);
