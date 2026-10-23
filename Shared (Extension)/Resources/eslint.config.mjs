@@ -7,7 +7,7 @@ const rules = {
 };
 
 export default [
-  { ignores: ["lib/fflate.min.js"] },
+  { ignores: ["lib/fflate.min.js", "lib/purify.min.js"] },
 
   {
     files: [

@@ -1,63 +1,52 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
-const vm = require("node:vm");
-const { DOMParser, parseHTML } = require("linkedom");
-const fflate = require("fflate");
+const { JSDOM } = require("jsdom");
 
 async function main() {
-  const page = parseHTML(fs.readFileSync("reader/reader.html", "utf8"));
-  const frame = page.document.getElementById("frame");
-  frame.contentDocument = parseHTML(
-    "<html><head></head><body></body></html>",
-  ).document;
-  frame.contentWindow = {
-    addEventListener() {},
-    scrollTo() {
-      assert.equal(
-        frame.style.visibility,
-        "hidden",
-        "hide the page until restored",
-      );
-    },
+  const page = new JSDOM(fs.readFileSync("reader/reader.html", "utf8"), {
+    runScripts: "outside-only",
+    url: "https://reader.example/",
+  });
+  const { window } = page;
+  const frame = window.document.getElementById("frame");
+  frame.contentWindow.scrollTo = () => {
+    assert.equal(
+      frame.style.visibility,
+      "hidden",
+      "hide the page until restored",
+    );
   };
-
-  const context = {
-    Blob,
-    DOMParser,
-    NodeFilter: { SHOW_CDATA_SECTION: 8, SHOW_ELEMENT: 1 },
-    TextDecoder,
-    TextEncoder,
-    URL,
-    URLSearchParams,
-    clearTimeout: () => {},
-    console,
-    crypto: globalThis.crypto,
-    document: page.document,
-    fflate,
-    getComputedStyle: () => ({ getPropertyValue: () => "" }),
-    location: { search: "", hash: "" },
-    setTimeout: () => 0,
-    window: page.window,
-  };
-  context.globalThis = context;
-  context.self = context;
-  vm.createContext(context);
-  vm.runInContext(fs.readFileSync("lib/origami-epub.js", "utf8"), context);
-  context.OrigamiLibrary = {
+  window.URL.createObjectURL = () => "blob:book-image";
+  window.URL.revokeObjectURL = () => {};
+  window.OrigamiLibrary = {
     async save() {},
     async getPosition() {
       return null;
     },
   };
+  for (const script of [
+    "lib/fflate.min.js",
+    "lib/origami-epub.js",
+    "lib/purify.min.js",
+    "reader/epub-sanitizer.js",
+  ]) {
+    window.eval(fs.readFileSync(script, "utf8"));
+  }
 
-  const book = await context.OrigamiEPUB.open(
+  const book = await window.OrigamiEPUB.open(
     fs.readFileSync("test/sample-origami.epub"),
   );
   const firstPath = book.spine[0].path;
   const firstContent = book
     .text(firstPath)
-    .replace("<html xmlns=", '<html dir="rtl" class="book-root" xmlns=')
-    .replace("<body>", '<body lang="ar" data-book-body="first">');
+    .replace(
+      "<html xmlns=",
+      '<html dir="rtl" class="book-root" onload="alert(1)" xmlns=',
+    )
+    .replace(
+      "<body>",
+      '<body lang="ar" onclick="alert(1)" data-book-body="first">',
+    );
   book.files.set(firstPath, new TextEncoder().encode(firstContent));
 
   const secondPath = "content/chapters/second.xhtml";
@@ -68,7 +57,7 @@ async function main() {
   book.files.set(
     secondPath,
     new TextEncoder().encode(
-      '<html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" href="second.css"/><style media="print">#second { display: none; }</style></head><body><h2 id="second" class="second-chapter" onclick="alert(1)">Second spine chapter</h2><p>End of whole book</p><img src="../images/fold.png"/><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image xlink:href="../images/fold.png"/></svg><script>alert(1)</script></body></html>',
+      '<html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" href="second.css"/><style media="print">#second { display: none; }</style></head><body><h2 id="second" class="second-chapter" onclick="alert(1)">Second spine chapter</h2><p>End of whole book</p><a id="encoded" href="java&#x09;script:alert(1)">Bad link</a><a id="internal" href="#second" data-citation-id="ref-1">Good link</a><img src="../images/fold.png"/><img id="remote" src="https://evil.example/pixel"/><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image xlink:href="../images/fold.png"/><image id="dual" href="https://evil.example/cover" xlink:href="../images/fold.png"/></svg><script>alert(1)</script></body></html>',
     ),
   );
   book.spine.push({
@@ -79,16 +68,31 @@ async function main() {
     properties: [],
   });
 
+  const fallbackPath = "content/chapters/fallback.xhtml";
+  book.files.set(
+    fallbackPath,
+    new TextEncoder().encode(
+      '<html><body><section id="html-fallback"><p>Malformed HTML</section><a id="fallback-link" href="java&#x09;script:alert(1)">Bad link</a></body></html>',
+    ),
+  );
+  book.spine.push({
+    id: "fallback",
+    href: "fallback.xhtml",
+    path: fallbackPath,
+    mediaType: "application/xhtml+xml",
+    properties: [],
+  });
+
   const readerSource = fs.readFileSync("reader/reader.js", "utf8");
   const bootAt = readerSource.indexOf("  boot().catch(");
   assert.ok(bootAt > 0, "reader test could not locate boot call");
   const readerWithoutBoot =
     readerSource.slice(0, bootAt) +
     "  globalThis.readerTest = { renderBook, openBytes, state };\n})();";
-  vm.runInContext(readerWithoutBoot, context);
-  context.readerTest.state.book = book;
-  context.readerTest.state.prefs.bookCSS = false;
-  context.readerTest.renderBook();
+  window.eval(readerWithoutBoot);
+  window.readerTest.state.book = book;
+  window.readerTest.state.prefs.bookCSS = false;
+  window.readerTest.renderBook();
 
   const body = frame.contentDocument.body;
   assert.equal(
@@ -99,8 +103,13 @@ async function main() {
     frame.contentDocument.documentElement.getAttribute("class"),
     "book-root",
   );
+  assert.equal(
+    frame.contentDocument.documentElement.hasAttribute("onload"),
+    false,
+  );
   assert.equal(body.getAttribute("lang"), "ar");
-  assert.equal(body.getAttribute("data-book-body"), "first");
+  assert.equal(body.hasAttribute("onclick"), false);
+  assert.equal(body.hasAttribute("data-book-body"), false);
   assert.ok(
     frame.contentDocument
       .getElementById("ot-book-css")
@@ -129,6 +138,15 @@ async function main() {
   assert.ok(body.textContent.includes("Folding the Page"));
   assert.ok(body.textContent.includes("Second spine chapter"));
   assert.ok(body.textContent.includes("End of whole book"));
+  assert.ok(body.textContent.includes("Malformed HTML"));
+  assert.ok(
+    book.warnings.some((warning) => warning.includes("parsed as HTML")),
+    "malformed XHTML should use the HTML parser fallback",
+  );
+  assert.equal(
+    body.querySelector("#fallback-link").hasAttribute("href"),
+    false,
+  );
   assert.ok(
     body.querySelector("#second").parentNode === body,
     "spine content should be appended without an extra wrapper",
@@ -138,25 +156,33 @@ async function main() {
       body.textContent.indexOf("Second spine chapter"),
     "spine items should appear in reading order",
   );
-  const secondImage = body.querySelector("#second + p + img");
+  const secondImage = body.querySelector("#second ~ img:not(#remote)");
   assert.ok(secondImage.getAttribute("src").startsWith("blob:"));
   const svgImage = body.querySelector("svg image");
   assert.ok(
     svgImage.getAttribute("xlink:href")?.startsWith("blob:"),
     "SVG xlink:href image should load from the EPUB archive",
   );
+  const dualImage = body.querySelector("#dual");
+  assert.equal(dualImage.hasAttribute("href"), false);
+  assert.equal(dualImage.hasAttribute("xlink:href"), false);
   assert.equal(body.querySelector("#second").hasAttribute("onclick"), false);
-  assert.ok(
-    !body.querySelector('script:not([type="application/json"])'),
-    "book scripts must not enter the iframe",
+  assert.equal(body.querySelector("#encoded").hasAttribute("href"), false);
+  assert.equal(body.querySelector("#internal").getAttribute("href"), "#second");
+  assert.equal(
+    body.querySelector("#internal").getAttribute("data-citation-id"),
+    "ref-1",
   );
+  assert.equal(body.querySelector("#remote").hasAttribute("src"), false);
+  assert.equal(body.querySelector("script"), null);
+  assert.equal(body.querySelector("#visual-meta-payload").localName, "pre");
   assert.ok(
-    !page.document.getElementById("chapter-nav"),
+    !window.document.getElementById("chapter-nav"),
     "chapter buttons should be removed",
   );
-  context.readerTest.state.book = null;
-  context.readerTest.state.iwin = null;
-  await context.readerTest.openBytes(
+  window.readerTest.state.book = null;
+  window.readerTest.state.iwin = null;
+  await window.readerTest.openBytes(
     fs.readFileSync("test/sample-origami.epub"),
     "sample.epub",
   );

@@ -198,8 +198,8 @@
         <div class="paper" id="paper">
           <!-- allow-scripts is required for Safari: WebKit does not fire parent-attached
              event listeners inside a script-disabled sandbox (WebKit bug 218086).
-             No book code can run anyway: reader.js strips scripts, nested frames,
-             inline handlers and javascript: URLs before the content goes in. -->
+             EPUB HTML is sanitized before insertion. CSP and iframe isolation
+             are separate security layers. -->
           <iframe
             id="frame"
             title="Book content"
@@ -225,6 +225,8 @@
     <script src="../lib/fflate.min.js"></script>
     <script src="../lib/origami-epub.js"></script>
     <script src="../lib/library.js"></script>
+    <script src="../lib/purify.min.js"></script>
+    <script src="epub-sanitizer.js"></script>
     <script src="reader.js"></script>
   </body>
 </html>

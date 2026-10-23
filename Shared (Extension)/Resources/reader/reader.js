@@ -187,7 +187,7 @@ aside.ot-stretchtext-content { margin: 0.5em 0 0.5em 1em; border-left: 2px solid
 aside.ot-stretchtext-content[hidden] { display: none; }
 #visual-meta { display: none; font-size: 0.8em; color: var(--ot-ink-2) !important; }
 #visual-meta.ot-shown { display: block; }
-#visual-meta script { display: block; white-space: pre-wrap; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.85em; word-break: break-all; }
+#visual-meta pre { display: block; white-space: pre-wrap; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.85em; word-break: break-all; }
 .ot-meta-toggle { margin: 3em 0 0; padding-top: 1em; border-top: 1px solid var(--ot-line); }
 .ot-meta-toggle button { font: inherit; font-size: 0.85em; color: var(--ot-ink-2); background: transparent; border: 1px solid var(--ot-line); border-radius: 6px; padding: 0.3em 0.8em; cursor: pointer; }
 mark.ot-q { background: var(--ot-mark); color: inherit; padding: 0 0.05em; border-radius: 2px; }
@@ -327,21 +327,6 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
       }
       const source = parseContent(content);
 
-      // Visual-Meta CDATA must become text before entering the HTML iframe.
-      const walker = source.createTreeWalker(
-        source,
-        NodeFilter.SHOW_CDATA_SECTION,
-      );
-      const cdatas = [];
-      let cdata;
-      while ((cdata = walker.nextNode())) cdatas.push(cdata);
-      for (const node of cdatas) {
-        node.parentNode.replaceChild(
-          source.createTextNode(node.nodeValue),
-          node,
-        );
-      }
-
       const stylesheetLinks = source.querySelectorAll(
         'link[rel~="stylesheet"]',
       );
@@ -370,34 +355,11 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
         style.remove();
       }
 
-      // The iframe runs our listeners, so imported book HTML cannot run scripts.
-      const scripts = source.querySelectorAll("script");
-      for (const script of scripts) {
-        if (script.id === "visual-meta-payload") {
-          script.setAttribute("type", "application/json");
-        } else {
-          script.remove();
-        }
-      }
-      const unsafeElements = source.querySelectorAll(
-        "link, base, iframe, frame, embed, object, meta[http-equiv]",
-      );
-      for (const element of unsafeElements) element.remove();
-      const elements = source.querySelectorAll("*");
-      for (const element of elements) {
-        for (const attr of Array.from(element.attributes)) {
-          const executableURL =
-            /(^|:)(href|src|action|formaction|data)$/i.test(attr.name) &&
-            /^\s*javascript:/i.test(attr.value);
-          if (/^on/i.test(attr.name) || executableURL) {
-            element.removeAttribute(attr.name);
-          }
-        }
-      }
-
-      const sourceBody = source.querySelector("body") || source.documentElement;
+      const cleanSource =
+        globalThis.OrigamiEpubSanitizer.sanitizeDocument(source);
+      const sourceBody = cleanSource.body;
       if (item === book.spine[0]) {
-        for (const attr of source.documentElement.attributes) {
+        for (const attr of cleanSource.documentElement.attributes) {
           html.setAttribute(attr.name, attr.value);
         }
         for (const attr of sourceBody.attributes) {
@@ -412,12 +374,14 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
             ? "href"
             : "xlink:href";
         const href = image.getAttribute(attribute);
+        image.removeAttribute("src");
+        image.removeAttribute("href");
+        image.removeAttribute("xlink:href");
         if (!href) continue;
         const path = book.resolve(item.path, href);
-        if (!path) continue;
-        const bytes = book.bytes(path);
+        const bytes = path ? book.bytes(path) : null;
         if (!bytes) {
-          image.setAttribute("data-ot-missing", path);
+          if (path) image.setAttribute("data-ot-missing", path);
           continue;
         }
         const asset = assets.find((entry) => entry.path === path);
