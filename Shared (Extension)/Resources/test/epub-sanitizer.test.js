@@ -51,6 +51,19 @@ assert.equal(document.querySelector("#direct").hasAttribute("href"), false);
 assert.equal(document.querySelector("script"), null);
 assert.equal(document.querySelector("iframe"), null);
 
+const navigationMarkup =
+  '<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="refresh" content="3;url=https://evil.example"/><base href="https://evil.example/"/></head><body><form action="https://evil.example/"><button>Submit</button></form><p id="book-text">Keep reading</p></body></html>';
+for (const type of ["application/xhtml+xml", "text/html"]) {
+  const safeBook = clean(navigationMarkup, type);
+  assert.equal(safeBook.querySelector("meta"), null);
+  assert.equal(safeBook.querySelector("base"), null);
+  assert.equal(safeBook.querySelector("form"), null);
+  assert.equal(
+    safeBook.querySelector("#book-text").textContent,
+    "Keep reading",
+  );
+}
+
 const accessible = clean(
   '<html xmlns="http://www.w3.org/1999/xhtml"><body><section aria-labelledby="chapter-title" aria-describedby="chapter-summary"><h2 id="chapter-title">Chapter</h2><p id="chapter-summary">Summary</p></section></body></html>',
 );

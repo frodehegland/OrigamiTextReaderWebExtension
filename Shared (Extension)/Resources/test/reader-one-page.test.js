@@ -69,12 +69,15 @@ async function main() {
   });
 
   const fallbackPath = "content/chapters/fallback.xhtml";
-  book.files.set(
-    fallbackPath,
-    new TextEncoder().encode(
-      '<html><body><section id="html-fallback"><p>Malformed HTML</section><a id="fallback-link" href="java&#x09;script:alert(1)">Bad link</a></body></html>',
-    ),
-  );
+  const fallbackMarkup = [
+    '<html><head><meta http-equiv="refresh" content="3;url=https://evil.example"/><base href="https://evil.example/"/></head>',
+    '<body><section id="html-fallback"><p>Malformed HTML</section>',
+    '<a id="fallback-link" href="java&#x09;script:alert(1)">Bad link</a>',
+    '<a id="network-path" href="//evil.example/phish">Network link</a>',
+    '<a id="package-path" href="chapter.xhtml">Package link</a>',
+    '<form action="https://evil.example/"><button>Submit</button></form></body></html>',
+  ].join("");
+  book.files.set(fallbackPath, new TextEncoder().encode(fallbackMarkup));
   book.spine.push({
     id: "fallback",
     href: "fallback.xhtml",
@@ -139,6 +142,7 @@ async function main() {
   assert.ok(body.textContent.includes("Second spine chapter"));
   assert.ok(body.textContent.includes("End of whole book"));
   assert.ok(body.textContent.includes("Malformed HTML"));
+  assert.equal(frame.contentDocument.querySelector("meta, base, form"), null);
   assert.ok(
     book.warnings.some((warning) => warning.includes("parsed as HTML")),
     "malformed XHTML should use the HTML parser fallback",
@@ -147,6 +151,18 @@ async function main() {
     body.querySelector("#fallback-link").hasAttribute("href"),
     false,
   );
+  for (const id of ["network-path", "package-path"]) {
+    const event = new frame.contentWindow.MouseEvent("click", {
+      bubbles: true,
+      cancelable: true,
+    });
+    body.querySelector(`#${id}`).dispatchEvent(event);
+    assert.equal(
+      event.defaultPrevented,
+      true,
+      `${id} must not navigate the frame`,
+    );
+  }
   assert.ok(
     body.querySelector("#second").parentNode === body,
     "spine content should be appended without an extra wrapper",

@@ -465,19 +465,17 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
         hidePopover();
         return;
       }
+      if (a.localName === "a") ev.preventDefault();
 
       if (a.matches("a.ot-stretchtext")) {
-        ev.preventDefault();
         toggleStretch(a);
         return;
       }
       if (a.matches("a.citation")) {
-        ev.preventDefault();
         showCitation(a);
         return;
       }
       if (a.matches('a[role~="doc-noteref"]')) {
-        ev.preventDefault();
         showNote(a);
         return;
       }
@@ -490,24 +488,20 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
       const href = a.getAttribute("href") || "";
       const olink = O.parseOrigamiLink(href);
       if (olink) {
-        ev.preventDefault();
         state.popoverAnchor = a;
         followOrigamiLink(olink);
         return;
       }
       if (href.startsWith("#")) {
-        ev.preventDefault();
         navigateTo(decodeURIComponent(href.slice(1)));
         return;
       }
       if (/^[a-z][a-z0-9+.-]*:/i.test(href)) {
-        ev.preventDefault();
         window.open(href, "_blank", "noopener");
         return;
       }
       // relative link inside the package: try as fragment on the content doc
       if (href.includes("#")) {
-        ev.preventDefault();
         navigateTo(decodeURIComponent(href.split("#")[1]));
       }
     });
