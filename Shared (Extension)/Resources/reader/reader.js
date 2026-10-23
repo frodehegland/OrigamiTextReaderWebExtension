@@ -119,14 +119,16 @@
   function savePrefs() {
     L.setPrefs(state.prefs);
   }
+  function applySidePreference() {
+    const isOpen = state.prefs.side === "open";
+    ui.body.dataset.side = isOpen ? "open" : "closed";
+    $("btn-sidebar").setAttribute("aria-pressed", String(isOpen));
+    ui.side.inert = !isOpen;
+  }
   function applyPrefs() {
     ui.body.classList.remove("theme-light", "theme-sepia", "theme-dark");
     ui.body.classList.add("theme-" + state.prefs.theme);
-    ui.body.dataset.side = state.prefs.side;
-    $("btn-sidebar").setAttribute(
-      "aria-pressed",
-      state.prefs.side === "open" ? "true" : "false",
-    );
+    applySidePreference();
     for (const b of document.querySelectorAll("[data-theme]"))
       b.setAttribute(
         "aria-checked",
@@ -293,12 +295,13 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
 
   // ------------------------------------------------------------------ rendering
   function parseContent(text) {
-    let doc = new DOMParser().parseFromString(text, "application/xhtml+xml");
+    const parser = new state.iwin.DOMParser();
+    let doc = parser.parseFromString(text, "application/xhtml+xml");
     if (doc.getElementsByTagName("parsererror").length) {
       state.book.warnings.push(
         "Content document is not well-formed XHTML; parsed as HTML instead.",
       );
-      doc = new DOMParser().parseFromString(text, "text/html");
+      doc = parser.parseFromString(text, "text/html");
     }
     return doc;
   }
@@ -317,10 +320,14 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
     const body = idoc.createElement("body");
     html.append(head, body);
     idoc.appendChild(html);
+    globalThis.OrigamiFramePolicy.install(idoc);
 
     const cssPaths = [];
     const inlineStyles = [];
-    const assets = Object.values(book.manifest);
+    const resources = globalThis.OrigamiEpubResources.create(
+      book,
+      state.blobURLs,
+    );
 
     for (const item of book.spine) {
       const content = book.text(item.path);
@@ -341,7 +348,7 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
       const styleElements = source.querySelectorAll("style");
       for (const style of styleElements) {
         const entry = {
-          css: style.textContent,
+          css: resources.css(item.path, style.textContent),
           media: style.getAttribute("media") || "",
           type: style.getAttribute("type") || "",
         };
@@ -359,6 +366,12 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
 
       const cleanSource =
         globalThis.OrigamiEpubSanitizer.sanitizeDocument(source);
+      for (const element of cleanSource.querySelectorAll("[style]")) {
+        element.setAttribute(
+          "style",
+          resources.style(item.path, element.getAttribute("style")),
+        );
+      }
       const sourceBody = cleanSource.body;
       if (item === book.spine[0]) {
         for (const attr of cleanSource.documentElement.attributes) {
@@ -380,19 +393,8 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
         image.removeAttribute("href");
         image.removeAttribute("xlink:href");
         if (!href) continue;
-        const path = book.resolve(item.path, href);
-        const bytes = path ? book.bytes(path) : null;
-        if (!bytes) {
-          if (path) image.setAttribute("data-ot-missing", path);
-          continue;
-        }
-        const asset = assets.find((entry) => entry.path === path);
-        const url = URL.createObjectURL(
-          new Blob([bytes], {
-            type: asset?.mediaType || "application/octet-stream",
-          }),
-        );
-        state.blobURLs.push(url);
+        const url = resources.image(item.path, href);
+        if (!url) continue;
         if (attribute === "xlink:href") {
           image.setAttributeNS("http://www.w3.org/1999/xlink", attribute, url);
         } else {
@@ -413,11 +415,13 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
         if (book.has(item.path)) cssPaths.push(item.path);
       }
     }
-    const bookStyle = idoc.createElement("style");
-    bookStyle.id = "ot-book-css";
-    bookStyle.className = "ot-book-css";
-    bookStyle.textContent = cssPaths.map((path) => book.text(path)).join("\n");
-    head.appendChild(bookStyle);
+    for (const [index, path] of cssPaths.entries()) {
+      const style = idoc.createElement("style");
+      if (index === 0) style.id = "ot-book-css";
+      style.className = "ot-book-css";
+      style.textContent = resources.css(path, book.text(path));
+      head.appendChild(style);
+    }
     for (const entry of inlineStyles) {
       const style = idoc.createElement("style");
       style.className = "ot-book-css";
@@ -1661,7 +1665,7 @@ hr { border: 0; border-top: 1px solid var(--ot-line); }
   function toggleSide() {
     state.prefs.side = state.prefs.side === "open" ? "closed" : "open";
     savePrefs();
-    applyPrefs();
+    applySidePreference();
   }
   function closeMenu() {
     const m = document.querySelector("#menu-text .menu");

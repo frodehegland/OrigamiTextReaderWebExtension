@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' blob:; img-src 'self' blob:; font-src blob:; connect-src http: https:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Origami Reader</title>
@@ -187,8 +191,9 @@
           <section class="library" id="library-section" hidden>
             <h2>Your library</h2>
             <p class="library__note">
-              Books you have opened stay in this browser so citation links can
-              find them. Nothing leaves your machine.
+              Books and reading positions stay in this browser. Fetching a book
+              by URL or opening an external link contacts that site; embedded
+              book resources cannot contact the network.
             </p>
             <ul class="library__list" id="library"></ul>
           </section>
@@ -198,8 +203,8 @@
         <div class="paper" id="paper">
           <!-- allow-scripts is required for Safari: WebKit does not fire parent-attached
              event listeners inside a script-disabled sandbox (WebKit bug 218086).
-             EPUB HTML is sanitized before insertion. CSP and iframe isolation
-             are separate security layers. -->
+             EPUB HTML is sanitized before insertion. Frame CSP blocks scripts
+             and network resources; origin isolation is a separate layer. -->
           <iframe
             id="frame"
             title="Book content"
@@ -227,6 +232,8 @@
     <script src="../lib/library.js"></script>
     <script src="../lib/purify.min.js"></script>
     <script src="epub-sanitizer.js"></script>
+    <script src="frame-policy.js"></script>
+    <script src="epub-resources.js"></script>
     <script src="reader.js"></script>
   </body>
 </html>

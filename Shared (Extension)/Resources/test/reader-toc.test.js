@@ -18,6 +18,8 @@ async function main() {
     "lib/origami-epub.js",
     "lib/purify.min.js",
     "reader/epub-sanitizer.js",
+    "reader/frame-policy.js",
+    "reader/epub-resources.js",
   ]) {
     window.eval(fs.readFileSync(script, "utf8"));
   }

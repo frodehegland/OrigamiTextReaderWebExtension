@@ -12,7 +12,8 @@
     "format:check": "prettier --check background.js content lib reader test manifest.json",
     "test:parser": "node test/parse.test.js",
     "test:sanitizer": "node test/epub-sanitizer.test.js",
-    "test:reader": "node test/reader-one-page.test.js && node test/reader-position.test.js && node test/reader-toc.test.js && node test/reader-links.test.js",
+    "test:reader": "node test/frame-policy.test.js && node test/epub-resources.test.js && node test/reader-one-page.test.js && node test/reader-position.test.js && node test/reader-toc.test.js && node test/reader-links.test.js",
+    "test:network": "node test/reader-network.test.js",
     "test": "npm run test:parser && npm run test:sanitizer && npm run test:reader",
     "check": "npm run lint && npm run format:check && npm test",
     "format": "prettier --write background.js content lib/library.js lib/origami-epub.js reader test manifest.json"

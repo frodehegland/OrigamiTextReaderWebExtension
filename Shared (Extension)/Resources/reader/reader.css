@@ -215,19 +215,26 @@ input:focus-visible,
   flex: 1;
   display: flex;
   min-height: 0;
+  position: relative;
+  overflow: hidden;
 }
 .side {
-  flex: 0 0 var(--side-w);
+  position: absolute;
+  z-index: 10;
+  inset: 0 auto 0 0;
   width: var(--side-w);
   min-height: 0;
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--line);
   background: var(--chrome);
-  transition: margin-left 160ms ease-out;
+  transform: translateX(0);
+  transition: transform 160ms ease-out;
+  will-change: transform;
 }
 body[data-side="closed"] .side {
-  margin-left: calc(-1 * var(--side-w));
+  pointer-events: none;
+  transform: translateX(-100%);
 }
 body[data-view="home"] .side {
   display: none;
@@ -651,14 +658,7 @@ body.theme-dark .toast {
 
 @media (max-width: 720px) {
   :root {
-    --side-w: 240px;
-  }
-  .side {
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    bottom: 0;
-    left: 0;
+    --side-w: 300px;
   }
   .bar__by {
     display: none;

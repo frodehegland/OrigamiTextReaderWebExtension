@@ -8,8 +8,10 @@ codebase. Any EPUB 3 opens; Origami ones get the extra behaviour.
 **Reader** (`reader/`) — toolbar button, or right-click any `.epub` link → *Open in Origami Reader*.
 - Opens from file, drag-and-drop, a URL, or the local library.
 - Resolves the OPF via `container.xml`, renders the spine document in a sandboxed
-  iframe (no scripts run), rewrites images to blob URLs, keeps the book's own CSS
-  (switchable off) under a reader theme (light / sepia / dark, text size).
+  iframe (book scripts are blocked), rewrites archived images and CSS resources
+  to local blob URLs, and keeps the book's own CSS (switchable off) under a
+  reader theme (light / sepia / dark, text size). CSP blocks automatic network
+  requests from EPUB content.
 - Visual-Meta read from `visual-meta.json`, falling back to the end-anchored
   embedded copy; the `#visual-meta` appendix is hidden behind a *Show Visual-Meta* toggle.
 - Stretchtext: `»»` markers toggle `hidden` / `aria-expanded` on click, Enter, Space;
@@ -32,7 +34,9 @@ codebase. Any EPUB 3 opens; Origami ones get the extra behaviour.
   fallback), plus a furthest-read mark. *Copy position* gives an origamitext:// or web link.
 - Library: every opened EPUB is kept in IndexedDB so `origamitext://open/<id>` and
   `https://origamitext.app/o/<id>` links resolve by identity (origami-id, `urn:uuid`, or the
-  uuid derived from the origami-id per spec §3). Nothing leaves the machine.
+  uuid derived from the origami-id per spec §3). Books and reading positions
+  stay in this browser; fetching an EPUB by URL or opening an external link
+  explicitly contacts that site.
 
 **Carrier links on every page** (`content/`) — hovering an origamitext:// or origamitext.app/o/
 link shows a card with id, fragment and quote, *Open in reader* and *Copy address*.

@@ -20,6 +20,7 @@ async function main() {
   window.URL.revokeObjectURL = () => {};
   window.OrigamiLibrary = {
     async save() {},
+    async setPrefs() {},
     async getPosition() {
       return null;
     },
@@ -29,6 +30,8 @@ async function main() {
     "lib/origami-epub.js",
     "lib/purify.min.js",
     "reader/epub-sanitizer.js",
+    "reader/frame-policy.js",
+    "reader/epub-resources.js",
   ]) {
     window.eval(fs.readFileSync(script, "utf8"));
   }
@@ -52,12 +55,18 @@ async function main() {
   const secondPath = "content/chapters/second.xhtml";
   book.files.set(
     "content/chapters/second.css",
-    new TextEncoder().encode(".second-chapter { color: rebeccapurple; }"),
+    new TextEncoder().encode(
+      '@import "nested.css"; .second-chapter { color: rebeccapurple; background-image: url("../images/fold.png"); }',
+    ),
+  );
+  book.files.set(
+    "content/chapters/nested.css",
+    new TextEncoder().encode(".nested { color: teal; }"),
   );
   book.files.set(
     secondPath,
     new TextEncoder().encode(
-      '<html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" href="second.css"/><style media="print">#second { display: none; }</style></head><body><h2 id="second" class="second-chapter" onclick="alert(1)">Second spine chapter</h2><p>End of whole book</p><a id="encoded" href="java&#x09;script:alert(1)">Bad link</a><a id="internal" href="#second" data-citation-id="ref-1">Good link</a><img src="../images/fold.png"/><img id="remote" src="https://evil.example/pixel"/><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image xlink:href="../images/fold.png"/><image id="dual" href="https://evil.example/cover" xlink:href="../images/fold.png"/></svg><script>alert(1)</script></body></html>',
+      '<html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" href="second.css"/><style media="print">#second { display: none; } .inline { background: url("../images/fold.png"); }</style></head><body><h2 id="second" class="second-chapter" style="background-image: url(../images/fold.png)" onclick="alert(1)">Second spine chapter</h2><p>End of whole book</p><a id="encoded" href="java&#x09;script:alert(1)">Bad link</a><a id="internal" href="#second" data-citation-id="ref-1">Good link</a><img src="../images/fold.png"/><img id="remote" src="https://evil.example/pixel"/><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image xlink:href="../images/fold.png"/><image id="dual" href="https://evil.example/cover" xlink:href="../images/fold.png"/></svg><script>alert(1)</script></body></html>',
     ),
   );
   book.spine.push({
@@ -91,7 +100,7 @@ async function main() {
   assert.ok(bootAt > 0, "reader test could not locate boot call");
   const readerWithoutBoot =
     readerSource.slice(0, bootAt) +
-    "  globalThis.readerTest = { renderBook, openBytes, state };\n})();";
+    "  globalThis.readerTest = { renderBook, openBytes, state, toggleSide };\n})();";
   window.eval(readerWithoutBoot);
   window.readerTest.state.book = book;
   window.readerTest.state.prefs.bookCSS = false;
@@ -113,15 +122,36 @@ async function main() {
   assert.equal(body.getAttribute("lang"), "ar");
   assert.equal(body.hasAttribute("onclick"), false);
   assert.equal(body.hasAttribute("data-book-body"), false);
+  const secondBookStyle = Array.from(
+    frame.contentDocument.querySelectorAll("style.ot-book-css"),
+  ).find((style) => style.textContent.includes(".second-chapter"));
+  assert.ok(secondBookStyle, "the second spine stylesheet should be loaded");
   assert.ok(
-    frame.contentDocument
-      .getElementById("ot-book-css")
-      .textContent.includes(".second-chapter"),
-    "the second spine stylesheet should be loaded",
+    secondBookStyle.textContent.trim().startsWith('@import url("blob:'),
+    "each linked stylesheet must keep its imports before its own rules",
+  );
+  assert.match(
+    secondBookStyle.textContent,
+    /@import url\("blob:/,
+    "nested packaged CSS should be kept locally",
+  );
+  assert.match(
+    secondBookStyle.textContent,
+    /background-image: url\("blob:/,
+    "CSS image should use a packaged blob",
   );
   assert.ok(
     frame.contentDocument.head.querySelector('style[media="print"]'),
     "inline style media should be preserved",
+  );
+  assert.match(
+    frame.contentDocument.head.querySelector('style[media="print"]')
+      .textContent,
+    /background: url\("blob:/,
+  );
+  assert.match(
+    body.querySelector("#second").getAttribute("style"),
+    /url\("blob:/,
   );
   assert.ok(
     Array.from(frame.contentDocument.querySelectorAll(".ot-book-css")).every(
@@ -142,7 +172,11 @@ async function main() {
   assert.ok(body.textContent.includes("Second spine chapter"));
   assert.ok(body.textContent.includes("End of whole book"));
   assert.ok(body.textContent.includes("Malformed HTML"));
-  assert.equal(frame.contentDocument.querySelector("meta, base, form"), null);
+  assert.equal(frame.contentDocument.querySelector("base, form"), null);
+  assert.equal(
+    frame.contentDocument.querySelector('meta[http-equiv="refresh"]'),
+    null,
+  );
   assert.ok(
     book.warnings.some((warning) => warning.includes("parsed as HTML")),
     "malformed XHTML should use the HTML parser fallback",
@@ -195,6 +229,29 @@ async function main() {
   assert.ok(
     !window.document.getElementById("chapter-nav"),
     "chapter buttons should be removed",
+  );
+  const rootStyle = frame.contentDocument.documentElement.style;
+  const setProperty = rootStyle.setProperty.bind(rootStyle);
+  let frameThemeWrites = 0;
+  rootStyle.setProperty = (...args) => {
+    frameThemeWrites += 1;
+    return setProperty(...args);
+  };
+  window.readerTest.toggleSide();
+  assert.equal(window.document.body.dataset.side, "closed");
+  assert.equal(
+    window.document.getElementById("btn-sidebar").getAttribute("aria-pressed"),
+    "false",
+  );
+  assert.equal(
+    window.document.getElementById("side").inert,
+    true,
+    "closed overlay must not receive pointer or keyboard interaction",
+  );
+  assert.equal(
+    frameThemeWrites,
+    0,
+    "sidebar toggle must not reapply styles to the book frame",
   );
   window.readerTest.state.book = null;
   window.readerTest.state.iwin = null;
