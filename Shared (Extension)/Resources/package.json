@@ -1,0 +1,39 @@
+{
+  "name": "origamitextreaderwebextension",
+  "version": "1.0.0",
+  "description": "Reads Origami Text EPUBs (spec v1.0, 4 Sept 2026) in Chrome and Safari from one codebase. Any EPUB 3 opens; Origami ones get the extra behaviour.",
+  "main": "background.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "format:check": "prettier --check background.js content lib reader test manifest.json",
+    "test:parser": "node test/parse.test.js",
+    "test:sanitizer": "node test/epub-sanitizer.test.js",
+    "test:reader": "node test/frame-policy.test.js && node test/epub-resources.test.js && node test/reader-one-page.test.js && node test/reader-position.test.js && node test/reader-toc.test.js && node test/reader-links.test.js",
+    "test:network": "node test/reader-network.test.js",
+    "test": "npm run test:parser && npm run test:sanitizer && npm run test:reader",
+    "check": "npm run lint && npm run format:check && npm test",
+    "format": "prettier --write background.js content lib/library.js lib/origami-epub.js reader test manifest.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.zuzex.com/akechedzhiev/origamitextreaderwebextension.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "fflate": "^0.8.3",
+    "globals": "^17.13.0",
+    "jsdom": "30.1.3",
+    "linkedom": "^0.18.14",
+    "prettier": "^3.9.10",
+    "dompurify": "3.4.17"
+  }
+}

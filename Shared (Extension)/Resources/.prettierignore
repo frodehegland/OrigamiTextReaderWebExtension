@@ -1,0 +1,6 @@
+lib/fflate.min.js
+lib/purify.min.js
+node_modules/
+coverage/
+dist/
+build/
